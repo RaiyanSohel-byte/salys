@@ -36,6 +36,7 @@ export const TaskHome = () => {
   const axios = useAxios();
 
   const fetchStreakData = async () => {
+    console.log("Fetching streak data...");
     const response = await axios.get("/api/tasks/total-daily-tasks/");
     console.log("Streak data:", response.data);
     const today = new Date().toLocaleDateString("en-CA");
@@ -200,9 +201,8 @@ export const TaskHome = () => {
       // console.log("Gratitude entry saved:", response.data);
       setGratitudeText("");
       setHasSubmittedToday(true);
-
-      await fetchGratitudeEntries();
       fetchStreakData();
+      await fetchGratitudeEntries();
     } catch (error) {
       console.error("Error saving gratitude entry:", error);
     } finally {
@@ -778,10 +778,7 @@ export const TaskHome = () => {
                       <span className="text-white">
                         {totalBreathingSessions}
                       </span>
-                      {console.log(
-                        "totalBreathingSessions",
-                        totalBreathingSessions
-                      )}
+                    
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-400">

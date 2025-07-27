@@ -147,7 +147,21 @@ const ChatHome = () => {
           animation: fadeInUp 0.6s ease-out forwards;
         }
       `}</style>
+  <Dialog>
+        <DialogTrigger asChild>
+          <Image className='rounded-full cursor-pointer ' src={"/avater.png"} alt='Profile_Image' width={50} height={50}/>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[1075px] h-[550px] overflow-y-auto bg-blue-950 [&>button]:text-white">
+          <DialogHeader>
+            <DialogTitle>
+              <h1 className='text-center text-2xl font-bold text-white mb-6'>Edit Profile:</h1>
+              <ProfileWithActivity/>
+            </DialogTitle>
+          </DialogHeader>
 
+          
+        </DialogContent>
+      </Dialog>
       <main className="h-screen w-full flex flex-col relative overflow-hidden">
         <div
           className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out z-10 ${
