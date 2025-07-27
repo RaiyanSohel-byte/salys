@@ -3,48 +3,52 @@ import React from "react";
 
 const MentalHealthHero = () => {
   return (
-    <div className=" bg-black">
+    <div className=" bg-black px-6">
       <marquee className="mt-[20px]">
-        <div className="flex gap-8 text-primary text-xl font-bold justify-center">
+        <div className="flex gap-8 text-[#0056F6] text-xl font-bold justify-center">
           <li>CHILD COUNSELLING</li>
           <li>FAMILY COUNSELLING</li>
           <li>INDIVIDUAL COUNSELLING</li>
           <li>CHILD COUNSELLING</li>
           <li>COUPLE COUNSELLING</li>
           <li>FAMILY COUNSELLING</li>
+          <li>CHILD COUNSELLING</li>
+           <li>INDIVIDUAL COUNSELLING</li>
+            <li>CHILD COUNSELLING</li>
+              <li>COUPLE COUNSELLING</li>
+         
         </div>
       </marquee>
+      <hr className="bg-blue-600 h-[1px] border-none mt-4" />
       <div className="flex justify-center mt-24">
         <h1 className="text-white border border-white rounded-sm w-32 text-center">
           How We Work
         </h1>
       </div>
       <h1 className="text-center text-white font-bold text-4xl mt-8">
-        Nurture Your Mental{" "}
-        <span className="text-primary italic">Health</span> the Holistic Way
+        Nurture Your Mental <span className="italic font-playfair text-[#0056F6]">Health</span> the Holistic Way
       </h1>
       {/*Card*/}
       <div className="mt-[60px] lg:flex lg:gap-6 justify-center">
-        <div className="lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1 border-[#76A6FF] hover:bg-[#76A6FF] rounded-xl text-center   transition duration-300 mb-2">
+        <div className=" text-white lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1 border-[#76A6FF] hover:bg-[#76A6FF] rounded-xl text-center transition duration-300 mb-2">
           <h1 className="font-bold text-xl">Step 1</h1>
           <h1 className="font-bold text-xl mt-7 mb-5">Choose Your Concern</h1>
           <p>
-            Lorem ipsum dolor sit amet consectetur. Euismod sit et arcu amet sed
-            ultrices quam.
+            Choose a concern to begin your journey toward healing and self-discovery.
           </p>
         </div>
-        <div className="lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1 border-[#76A6FF] hover:bg-[#76A6FF] rounded-xl text-center transition duration-300 mb-2">
+        <div className=" text-white lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1 border-[#76A6FF] hover:bg-[#76A6FF] rounded-xl text-center transition duration-300 mb-2">
           <h1 className="font-bold text-xl">Step 1</h1>
           <h1 className="font-bold text-xl mt-7 mb-5">Chat or Speak with AI Therapist</h1>
           <p>
-           Lorem ipsum dolor sit amet consectetur. Euismod sit et arcu amet sed ultrices quam.
+           Choose to chat or speak openly with your AI mental health companion.
           </p>
         </div>
-        <div className="lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1  rounded-xl text-center  border-[#76A6FF] hover:bg-[#76A6FF] transition duration-300">
+        <div className=" text-white lg:w-[424px] h-[267px] hover:text-black py-11 px-6 border-1  rounded-xl text-center  border-[#76A6FF] hover:bg-[#76A6FF] transition duration-300">
           <h1 className="font-bold text-xl">Step 1</h1>
           <h1 className="font-bold text-xl mt-7 mb-5">Track Progress & Get Daily Guidance</h1>
           <p>
-           Lorem ipsum dolor sit amet consectetur. Euismod sit et arcu amet sed ultrices quam.
+           Monitor your emotional growth over time and receive daily tips to stay on track.
           </p>
         </div>
       </div>

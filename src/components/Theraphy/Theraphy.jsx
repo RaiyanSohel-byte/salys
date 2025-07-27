@@ -5,12 +5,12 @@ import { CgArrowTopRightO } from "react-icons/cg";
 
 const Theraphy = () => {
   return (
-    <div className='pb-10 bg-black text-white'>
+    <div className='pb-10 bg-black text-white px-4 lg:px-0'>
       {/*Section-2*/}
       <div style={{
         background: 'radial-gradient(circle at center, #0129F470 5%, rgba(1, 12, 74, 0.20) 50%, #010C4A33 70%)',
       }} className='h-[532px] flex justify-center items-center text-center px-4'>
-        <p className='lg:py-14 text-2xl lg:text-[66px]  font-serif font-bold'>Explore personalized, <span className='text-blue-600 italic font-playfair'>AI-guided</span> <br /> therapy approaches tailored to <br /> your needs.</p>
+        <p className='lg:py-14 text-2xl lg:text-[66px]  font-serif font-bold'>Explore personalized, <span className='text-blue-600 italic font-playfair'>AI-guided</span> <br /> therapy approaches tailored to your <br />needs.</p>
       </div>
 
       {/*Section-2*/}
@@ -21,7 +21,13 @@ const Theraphy = () => {
           </h1>
           <h1 className=' text-2xl lg:text-4xl font-semibold mb-3'>Anxiety, depression, <span className='text-blue-600 italic font-semibold'>negative</span> thought <br /> patterns.</h1>
           <p className='text-lg'>Helps you recognize and reframe unhelpful thoughts and behaviors through <br /> structured tools and real-time AI support</p>
-           <Link href={'/'}><CgArrowTopRightO className='mt-3 text-4xl text-blue-600' /></Link>
+           <Link href={{
+  pathname: '/theraphyDetails',
+  query: { type: 'a' } // Or 'dbt', 'act', etc.
+}}>
+  <CgArrowTopRightO className='mt-3 text-4xl text-blue-600' />
+</Link>
+
         </div>
         
 
@@ -50,7 +56,13 @@ const Theraphy = () => {
           </h1>
           <h1 className=' text-2xl lg:text-4xl font-semibold mb-3 mt-2.5'>Emotional regulation, <span className='text-blue-600 italic font font-playfair'>trauma,</span> <br /> borderline personality</h1>
           <p className='text-lg'>Focuses on mindfulness, distress tolerance, emotional control, and <br /> interpersonal effectiveness.</p>
-           <Link href={'/'}><CgArrowTopRightO className='mt-3 text-4xl text-blue-600' /></Link>
+           <Link href={{
+  pathname: '/theraphyDetails',
+  query: { type: 'b' } // Or 'dbt', 'act', etc.
+}}>
+  <CgArrowTopRightO className='mt-3 text-4xl text-blue-600' />
+</Link>
+
         </div>
       </div>
 
@@ -64,7 +76,13 @@ const Theraphy = () => {
           </h1>
           <h1 className=' text-2xl lg:text-4xl font-semibold mb-3'>Anxiety, depression, OCD, <span className='text-blue-600 italic font-semibold'>trauma,</span> <br /> life transitions</h1>
           <p className='text-lg'>ACT focuses on psychological flexibility: the ability to stay present and <br /> choose value-driven behavior in any situation.</p>
-          <Link href={'/'}><CgArrowTopRightO className='mt-3 text-4xl text-blue-600' /></Link>
+          <Link href={{
+  pathname: '/theraphyDetails',
+  query: { type: 'c' } // Or 'dbt', 'act', etc.
+}}>
+  <CgArrowTopRightO className='mt-3 text-4xl text-blue-600' />
+</Link>
+
         </div>
 
         <div>

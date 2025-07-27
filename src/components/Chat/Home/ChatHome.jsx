@@ -1,6 +1,10 @@
 "use client";
+import ProfileWithActivity from '@/components/Profile/ProfileWithActivity'
+import { Button } from '@/components/ui/button'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from "@/components/ui/input";
 import { useAxios } from "@/providers/AxiosProvider";
+import Image from 'next/image'
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
