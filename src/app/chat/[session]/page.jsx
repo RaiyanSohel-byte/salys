@@ -1,11 +1,13 @@
 "use client";
 import React, { Suspense, useState, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 import { useParams } from 'next/navigation';
 import { useAxios } from '@/providers/AxiosProvider';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { MdArrowUpward, MdOutlineKeyboardVoice } from 'react-icons/md';
 import ProtectedRoute from "@/components/Auth/ProtectedRoute";
+import remarkGfm from 'remark-gfm';
 
 // Loading component for Suspense
 const ChatLoading = () => (
@@ -13,8 +15,8 @@ const ChatLoading = () => (
     <div className="text-center text-white">
       <div className="flex space-x-2 mb-4">
         <div className="w-4 h-4 bg-[#0059FF] rounded-full animate-bounce"></div>
-        <div className="w-4 h-4 bg-[#0059FF] rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-        <div className="w-4 h-4 bg-[#0059FF] rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+        <div className="w-4 h-4 bg-[#0059FF] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+        <div className="w-4 h-4 bg-[#0059FF] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
       </div>
       <p className="text-xl text-[#C5C5C5]">Loading your conversation...</p>
     </div>
@@ -27,7 +29,7 @@ const ChatSession = () => {
   const sessionId = params.session;
   console.log("Session ID:", sessionId);
   const axios = useAxios();
-  
+
   const { register, handleSubmit, reset } = useForm({
     defaultValues: { message: "" },
   });
@@ -42,19 +44,17 @@ const ChatSession = () => {
   useEffect(() => {
     const fetchChatSession = async () => {
       if (!sessionId) return;
-      
+
       try {
         setLoading(true);
         const response = await axios.get(`/api/therapy/sessions/${sessionId}/messages`);
         console.log("Chat session response:", response.data);
-        
+
         if (response.status === 200) {
-          // Transform the API response to match our message format
           const transformedMessages = [];
-          
+
           if (Array.isArray(response.data)) {
             response.data.forEach((item) => {
-              // Add user message
               transformedMessages.push({
                 id: `user-${item.id}`,
                 message: item.user_message,
@@ -62,8 +62,7 @@ const ChatSession = () => {
                 status: "success",
                 timestamp: item.timestamp,
               });
-              
-              // Add AI response
+
               transformedMessages.push({
                 id: `bot-${item.id}`,
                 message: item.ai_response,
@@ -73,11 +72,11 @@ const ChatSession = () => {
               });
             });
           }
-          
+
           setMessages(transformedMessages);
-          setChatData({ 
-            id: sessionId, 
-            createdAt: response.data[0]?.timestamp || new Date().toISOString() 
+          setChatData({
+            id: sessionId,
+            createdAt: response.data[0]?.timestamp || new Date().toISOString(),
           });
         } else {
           setError('Failed to load chat session');
@@ -97,7 +96,6 @@ const ChatSession = () => {
   const onSubmit = async (data) => {
     if (!data.message.trim()) return;
 
-    // Add user message instantly
     const userMessageId = Date.now();
     const newUserMessage = {
       id: userMessageId,
@@ -109,7 +107,6 @@ const ChatSession = () => {
 
     setMessages((prev) => [...prev, newUserMessage]);
 
-    // Add loading bot message
     const botMessageId = userMessageId + 1;
     setLoadingMessageId(botMessageId);
     const loadingBotMessage = {
@@ -123,16 +120,14 @@ const ChatSession = () => {
     setMessages((prev) => [...prev, loadingBotMessage]);
     reset();
 
-    // Send message to backend
     try {
-        console.log("Sending message:", data.message);
-        console.log("Session ID:", sessionId);
+      console.log("Sending message:", data.message);
+      console.log("Session ID:", sessionId);
       const response = await axios.post(`/api/therapy/chat/`, {
         message: data.message,
         session_id: sessionId,
       });
 
-      // Update bot message with response
       if (response.status === 200 || response.status === 201) {
         setMessages((prev) =>
           prev.map((msg) =>
@@ -191,8 +186,8 @@ const ChatSession = () => {
         <div className="text-center text-white">
           <h1 className="text-2xl font-bold text-red-500 mb-4">Error</h1>
           <p className="text-xl text-[#C5C5C5] mb-6">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-[#0059FF] text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
           >
             Try Again
@@ -218,10 +213,19 @@ const ChatSession = () => {
         .animate-fadeInUp {
           animation: fadeInUp 0.6s ease-out forwards;
         }
+        .markdown-content ol, .markdown-content ul {
+          padding-left: 20px; /* Ensure proper indentation */
+          margin: 0; /* Reset default margins */
+        }
+        .markdown-content li {
+          margin-bottom: 8px; /* Consistent spacing */
+        }
+        .markdown-content p {
+          margin: 0 0 10px; /* Spacing between paragraphs */
+        }
       `}</style>
 
       <main className="h-screen w-full flex flex-col relative overflow-hidden">
-
         {/* Messages Area */}
         <div className="flex-1 overflow-y-auto px-6 pt-6 pb-52">
           <div className="max-w-4xl mx-auto">
@@ -240,7 +244,7 @@ const ChatSession = () => {
                     }`}
                   >
                     <div
-                      className={`max-w-xs text-start lg:max-w-md px-4 py-2 rounded-lg ${
+                      className={`text-start max-w-2xl p-3 rounded-lg markdown-content ${
                         item.sender === "user"
                           ? "bg-[#0059FF] text-white ml-auto"
                           : "bg-[#FFFFFF1A] text-white mr-auto"
@@ -250,14 +254,36 @@ const ChatSession = () => {
                         <div className="flex items-center gap-2">
                           <div className="flex space-x-1">
                             <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                           </div>
                           <span className="text-sm text-gray-300">Thinking...</span>
                         </div>
                       ) : (
                         <div>
-                          <p className="text-lg">{item.message}</p>
+                          {item.sender === "bot" ? (
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                p({ children }) {
+                                  return <p className="mb-4">{children}</p>; 
+                                },
+                                ol({ children }) {
+                                  return <ol className="list-decimal">{children}</ol>; 
+                                },
+                                ul({ children }) {
+                                  return <ul className="list-disc">{children}</ul>; 
+                                },
+                                li({ children }) {
+                                  return <li className="ml-4">{children}</li>; 
+                                },
+                              }}
+                            >
+                              {console.log("Raw Bot message content:", item.message) || item.message}
+                            </ReactMarkdown>
+                          ) : (
+                            <p className="text-lg">{item.message}</p>
+                          )}
                           {item.timestamp && (
                             <p className="text-xs text-gray-400 mt-1">
                               {new Date(item.timestamp).toLocaleTimeString()}
@@ -275,10 +301,7 @@ const ChatSession = () => {
 
         {/* Input Form - Fixed at bottom */}
         <div className="-translate-x-1/2 -translate-y-1/3 absolute bottom-5 left-1/2 transform w-full px-6 z-50">
-          <form
-            className="lg:w-[920px] mx-auto"
-            onSubmit={handleSubmit(onSubmit)}
-          >
+          <form className="lg:w-[920px] mx-auto" onSubmit={handleSubmit(onSubmit)}>
             <div className="relative w-full">
               <Input
                 {...register("message")}
@@ -288,7 +311,7 @@ const ChatSession = () => {
                 onKeyPress={handleKeyPress}
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 text-2xl text-gray-800">
-                <MdOutlineKeyboardVoice className="cursor-pointer text-white" />
+                {/* <MdOutlineKeyboardVoice className="cursor-pointer text-white" /> */}
                 <MdArrowUpward
                   className="bg-gray-400 text-white rounded-sm p-1 cursor-pointer hover:bg-gray-300 transition-colors"
                   onClick={handleSubmit(onSubmit)}
