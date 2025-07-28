@@ -6,6 +6,7 @@ import { AxiosProvider } from "@/providers/AxiosProvider";
 import AuthProvider from "@/providers/AuthProvider";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import ClientLayout from "@/ClientLayout/ClientLayout";
+import { SubscriptionProvider } from "@/providers/SubscriptionProvider";
 
 
 const playfair = Playfair_Display({
@@ -51,18 +52,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={playfair.variable} >
-
+      <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
+      </head>
       <body
         className={`${inter.variable} antialiased ${nunito.variable}`}
       >
         <GoogleOAuthProvider clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}>
           <AuthProvider>
             <AxiosProvider>
-              {/* <Navbar/> */}
-              <ClientLayout>
-                {children}
-              </ClientLayout>
-              {/* <Footer/> */}
+              <SubscriptionProvider>
+                {/* <Navbar/> */}
+                <ClientLayout>
+                  {children}
+                </ClientLayout>
+                {/* <Footer/> */}
+              </SubscriptionProvider>
             </AxiosProvider>
           </AuthProvider>
         </GoogleOAuthProvider>

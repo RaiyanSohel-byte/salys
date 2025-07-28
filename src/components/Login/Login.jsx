@@ -14,11 +14,13 @@ import { GoogleSign } from "@/components/GoogleSignIn/GoogleSign";
 import Link from "next/link";
 import { GoogleBtnBackend } from "../GoogleSignIn/GoogleBtnBackend";
 import { setTokens } from "@/lib/auth";
+import { useSubscription } from "@/providers/SubscriptionProvider";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const axios = useAxios();
+  const { setSubscription } = useSubscription();
 
   const {
     register,
@@ -32,16 +34,15 @@ const Login = () => {
   };
 
   const onSubmit = async (data) => {
-    
     const { email, password } = data;
 
     try {
       setLoading(true);
       const response = await axios.post("/users/login/", { email, password });
-
-
       if (response.status === 201 || response.status === 200) {
         const { access, refresh, user } = response.data;
+
+        
 
         // Use the new token management utility
         if (access && refresh) {

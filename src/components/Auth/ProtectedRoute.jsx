@@ -11,11 +11,11 @@ export default function ProtectedRoute({ children }) {
 
   useEffect(() => {
     const checkAuth = () => {
-      console.log('🔍 Checking authentication...');
+      // console.log(' Checking authentication...');
       const tokens = getTokens();
 
-      console.log('📝 Access token:', tokens.access ? 'EXISTS' : 'MISSING');
-      console.log('🔄 Refresh token:', tokens.refresh ? 'EXISTS' : 'MISSING');
+      // console.log(' Access token:', tokens.access ? 'EXISTS' : 'MISSING');
+      // console.log(' Refresh token:', tokens.refresh ? 'EXISTS' : 'MISSING');
 
       if (!tokens.access && !tokens.refresh) {
         console.log('❌ No authentication tokens found - redirecting to home');

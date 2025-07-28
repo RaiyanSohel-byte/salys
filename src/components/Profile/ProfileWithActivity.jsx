@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { MdCheck, MdClose, MdLogout } from 'react-icons/md'
 import { DialogDemo } from '../ui/edit_profile_dialogue/dialogue'
@@ -7,11 +7,16 @@ import { Button } from '../ui/button'
 import { removeTokens } from "@/lib/auth"
 import { useRouter } from "next/navigation"
 import Swal from "sweetalert2"
+import { useAxios } from '@/providers/AxiosProvider'
+import { FaCircleUser } from "react-icons/fa6";
 
-const ProfileWithActivity = ({ onCloseDialog }) => {
+const ProfileWithActivity = ({  onCloseDialog , userData , handleUpdate }) => {
   const allDays = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
   const allActivityStatus = ['check', 'check', 'check', 'check', 'check', 'check', 'cross']
+ 
   const router = useRouter()
+
+  const axios = useAxios()
 
   const [dayRange, setDayRange] = useState(7)
 
@@ -94,6 +99,9 @@ const ProfileWithActivity = ({ onCloseDialog }) => {
   const days = allDays.slice(0, dayRange)
   const activityStatus = allActivityStatus.slice(0, dayRange)
 
+  
+
+
   return (
     <>
       <style jsx global>{`
@@ -110,21 +118,26 @@ const ProfileWithActivity = ({ onCloseDialog }) => {
         <div className="bg-[#0E1B38] rounded-none md:rounded-xl px-8 py-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             <div className="relative">
-              <Image
-                src="/avater.png"
-                alt="Profile"
-                width={90}
-                height={90}
-                className="rounded-full border-4 border-blue-500"
-              />
+             {userData?.image ? (
+                <Image
+                  src={userData?.profile_image}
+                  alt="Profile"
+                  width={90}
+                  height={90}
+                  className="rounded-full border-4 border-blue-500"
+                />
+              ) : (
+               <FaCircleUser size={100} className='text-blue-100'/>
+              )}
             </div>
             <div>
-              <h2 className="text-2xl font-semibold text-white">Md Sohanur Rahman</h2>
-              <p className="text-[#57A3FF] text-sm mt-1">mdsohanurhig316@gmail.com</p>
+              <h2 className="text-2xl font-semibold text-white">{userData?.name || 'Unknown User'}</h2>
+              <p className="text-[#57A3FF] text-sm mt-1">{userData?.email || 'Unknown Email'}</p>
             </div>
           </div>
           <div className="flex gap-3 justify-end md:justify-start">
-            <DialogDemo />
+            <DialogDemo userData={userData} handleUpdate={handleUpdate} />
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 cursor-pointer bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm"
@@ -136,7 +149,7 @@ const ProfileWithActivity = ({ onCloseDialog }) => {
           </div>
         </div>
 
-        {/* Activity Card */}
+        
         <div className="bg-[#0E1B38] rounded-none md:rounded-xl px-8 py-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6">
             <h3 className="text-xl text-white font-semibold mb-2 sm:mb-0">Your Activity</h3>

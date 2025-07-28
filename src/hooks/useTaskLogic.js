@@ -34,9 +34,9 @@ export const useTaskLogic = () => {
   const axios = useAxios();
 
   const fetchStreakData = async () => {
-    console.log("Fetching streak data...");
+    // console.log("Fetching streak data...");
     const response = await axios.get("/api/tasks/total-daily-tasks/");
-    console.log("Streak data:", response.data);
+    // console.log("Streak data:", response.data);
     const today = new Date().toLocaleDateString("en-CA");
     
     const todayEntry = response.data.find((entry) => {
@@ -44,13 +44,13 @@ export const useTaskLogic = () => {
       return entryDate === today;
     });
     
-    console.log("Today's entry:", todayEntry);
+    // console.log("Today's entry:", todayEntry);
     if (todayEntry) {
       let completed = 0;
       if (todayEntry.gratitude_completed) completed += 1;
       if (todayEntry.breathing_completed) completed += 1;
       if (todayEntry.affirmation_completed) completed += 1;
-      console.log("Today's completed tasks:", completed);
+      // console.log("Today's completed tasks:", completed);
       setCompletedTasks(completed);
     }
     
