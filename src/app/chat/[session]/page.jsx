@@ -5,6 +5,7 @@ import { useAxios } from '@/providers/AxiosProvider';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { MdArrowUpward, MdOutlineKeyboardVoice } from 'react-icons/md';
+import ProtectedRoute from "@/components/Auth/ProtectedRoute";
 
 // Loading component for Suspense
 const ChatLoading = () => (
@@ -304,9 +305,11 @@ const ChatSession = () => {
 // Main page component with Suspense
 const Page = () => {
   return (
-    <Suspense fallback={<ChatLoading />}>
-      <ChatSession />
-    </Suspense>
+    <>
+      <Suspense fallback={<ChatLoading />}>
+        <ChatSession />
+      </Suspense>
+    </>
   );
 };
 

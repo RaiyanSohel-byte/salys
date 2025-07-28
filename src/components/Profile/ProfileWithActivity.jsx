@@ -1,12 +1,17 @@
 'use client'
 import React, { useState } from 'react'
 import Image from 'next/image'
-import { MdCheck, MdClose } from 'react-icons/md'
+import { MdCheck, MdClose, MdLogout } from 'react-icons/md'
 import { DialogDemo } from '../ui/edit_profile_dialogue/dialogue'
+import { Button } from '../ui/button'
+import { removeTokens } from "@/lib/auth"
+import { useRouter } from "next/navigation"
+import Swal from "sweetalert2"
 
-const ProfileWithActivity = () => {
+const ProfileWithActivity = ({ onCloseDialog }) => {
   const allDays = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
   const allActivityStatus = ['check', 'check', 'check', 'check', 'check', 'check', 'cross']
+  const router = useRouter()
 
   const [dayRange, setDayRange] = useState(7)
 
@@ -14,11 +19,92 @@ const ProfileWithActivity = () => {
     setDayRange(Number(e.target.value))
   }
 
+  const handleLogout = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Logout button clicked!'); // Debug log
+    
+    // Close the dialog first
+    if (onCloseDialog) {
+      onCloseDialog();
+      // Wait a bit for the dialog to close
+      await new Promise(resolve => setTimeout(resolve, 500));
+    }
+    
+    try {
+      // Show confirmation dialog
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: 'Do you want to logout?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#0059FF',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, logout',
+        cancelButtonText: 'Cancel',
+        background: '#1a1f2e',
+        color: '#ffffff',
+        customClass: {
+          popup: 'swal-high-zindex'
+        }
+      });
+
+      console.log('Modal result:', result); // Debug log
+
+      if (result.isConfirmed) {
+        console.log('User confirmed logout'); // Debug log
+        // Clear tokens and redirect to login
+        removeTokens();
+        
+        // Show success message
+        await Swal.fire({
+          title: 'Logged Out!',
+          text: 'You have been successfully logged out.',
+          icon: 'success',
+          background: '#1a1f2e',
+          color: '#ffffff',
+          confirmButtonColor: '#0059FF',
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup: 'swal-high-zindex'
+          }
+        });
+
+        console.log('Redirecting to login...'); // Debug log
+        // Redirect to login page
+        router.push('/');
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to logout. Please try again.',
+        icon: 'error',
+        background: '#1a1f2e',
+        color: '#ffffff',
+        confirmButtonColor: '#0059FF',
+        customClass: {
+          popup: 'swal-high-zindex'
+        }
+      });
+    }
+  }
+
   const days = allDays.slice(0, dayRange)
   const activityStatus = allActivityStatus.slice(0, dayRange)
 
   return (
-    <div className="min-h-screen bg-[#060F25] px-0 md:px-10 py-8">
+    <>
+      <style jsx global>{`
+        .swal-high-zindex {
+          z-index: 99999 !important;
+        }
+        .swal2-container {
+          z-index: 99999 !important;
+        }
+      `}</style>
+      <div className="min-h-screen bg-[#060F25] px-0 md:px-10 py-8">
       <div className="w-full space-y-6">
         {/* User Profile Card */}
         <div className="bg-[#0E1B38] rounded-none md:rounded-xl px-8 py-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
@@ -37,8 +123,16 @@ const ProfileWithActivity = () => {
               <p className="text-[#57A3FF] text-sm mt-1">mdsohanurhig316@gmail.com</p>
             </div>
           </div>
-          <div className="flex justify-end md:justify-start">
+          <div className="flex gap-3 justify-end md:justify-start">
             <DialogDemo />
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 cursor-pointer bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded text-sm"
+              type="button"
+            >
+              <MdLogout className="w-4 h-4" />
+              Logout
+            </button>
           </div>
         </div>
 
@@ -81,6 +175,7 @@ const ProfileWithActivity = () => {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

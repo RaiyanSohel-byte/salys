@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { removeTokens, getTokens } from '@/lib/auth';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -15,7 +16,9 @@ const apiClient = axios.create({
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access');
+    const tokens = getTokens();
+    const token = tokens.access;
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -33,9 +36,8 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     if (error.response?.status === 401) {
-      // Clear tokens on unauthorized
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+      // Clear tokens on unauthorized using our utility function
+      removeTokens();
       localStorage.removeItem('user');
       // Optionally redirect to login
       if (typeof window !== 'undefined') {
@@ -131,7 +133,9 @@ export const userService = {
   // Refresh token
   refreshToken: async () => {
     try {
-      const refresh = localStorage.getItem('refresh');
+      const tokens = getTokens();
+      const refresh = tokens.refresh;
+      
       if (!refresh) {
         throw new Error('No refresh token available');
       }
@@ -153,16 +157,17 @@ export const userService = {
   // Logout
   logout: async () => {
     try {
-      const refresh = localStorage.getItem('refresh');
+      const tokens = getTokens();
+      const refresh = tokens.refresh;
+      
       if (refresh) {
         await apiClient.post('/users/logout/', { refresh: refresh });
       }
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
-      // Clear local storage regardless of API call success
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+      // Clear tokens and user data regardless of API call success
+      removeTokens();
       localStorage.removeItem('user');
     }
   },

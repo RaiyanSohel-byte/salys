@@ -1,13 +1,14 @@
 import { Geist, Geist_Mono, Playfair_Display } from "next/font/google";
 import Nav from "../../components/Chat/Shared/Nav";
+import ProtectedRoute from "@/components/Auth/ProtectedRoute";
+import ProfileDialog from "@/components/Profile/ProfileDialog";
 
 const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['400', '700'], // Add weights as needed
-  variable: '--font-playfair',
-  display: 'swap',
+  subsets: ["latin"],
+  weight: ["400", "700"], // Add weights as needed
+  variable: "--font-playfair",
+  display: "swap",
 });
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,18 +31,26 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex min-h-screen flex-col lg:flex-row">
-          <Nav />  
-          <div className="flex-1 main-content transition-all lg:ml-[250px] duration-300" >
-            <div  className="min-h-[100vh]  "
-                    style={{
-                      background:
-                        "radial-gradient(circle at top right, #0129F480 , black 40%)",
-                    }}>
-              {children}
+        <ProtectedRoute>
+          <div className="flex min-h-screen flex-col lg:flex-row">
+            <Nav />
+            <div className="flex-1 main-content transition-all lg:ml-[250px] duration-300 relative">
+              
+              <div className="absolute top-5 right-5 z-50">
+                <ProfileDialog />
+              </div>
+              <div
+                className="min-h-[100vh]  "
+                style={{
+                  background:
+                    "radial-gradient(circle at top right, #0129F480 , black 40%)",
+                }}
+              >
+                {children}
+              </div>
             </div>
           </div>
-        </div>
+        </ProtectedRoute>
       </body>
     </html>
   );

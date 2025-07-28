@@ -1,7 +1,5 @@
 "use client";
-import ProfileWithActivity from '@/components/Profile/ProfileWithActivity'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from "@/components/ui/input";
 import { useAxios } from "@/providers/AxiosProvider";
 import Image from 'next/image'
@@ -147,21 +145,6 @@ const ChatHome = () => {
           animation: fadeInUp 0.6s ease-out forwards;
         }
       `}</style>
-  <Dialog>
-        <DialogTrigger asChild>
-          <Image className='rounded-full cursor-pointer ' src={"/avater.png"} alt='Profile_Image' width={50} height={50}/>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[1075px] h-[550px] overflow-y-auto bg-blue-950 [&>button]:text-white">
-          <DialogHeader>
-            <DialogTitle>
-              <h1 className='text-center text-2xl font-bold text-white mb-6'>Edit Profile:</h1>
-              <ProfileWithActivity/>
-            </DialogTitle>
-          </DialogHeader>
-
-          
-        </DialogContent>
-      </Dialog>
       <main className="h-screen w-full flex flex-col relative overflow-hidden">
         <div
           className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out z-10 ${
@@ -253,9 +236,9 @@ const ChatHome = () => {
                 type="text"
                 placeholder="Start typing here..."
                 onKeyPress={handleKeyPress}
+                autoComplete="off"
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 text-2xl text-gray-800">
-                <MdOutlineKeyboardVoice className="cursor-pointer text-white" />
                 <MdArrowUpward
                   className="bg-gray-400 text-white rounded-sm p-1 cursor-pointer hover:bg-gray-300 transition-colors"
                   onClick={handleSubmit(onSubmit)}

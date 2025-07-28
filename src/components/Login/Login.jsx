@@ -13,6 +13,7 @@ import { useAxios } from "@/providers/AxiosProvider";
 import { GoogleSign } from "@/components/GoogleSignIn/GoogleSign";
 import Link from "next/link";
 import { GoogleBtnBackend } from "../GoogleSignIn/GoogleBtnBackend";
+import { setTokens } from "@/lib/auth";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,15 +41,14 @@ const Login = () => {
 
 
       if (response.status === 201 || response.status === 200) {
-        const { access, refresh ,user } = response.data;
+        const { access, refresh, user } = response.data;
 
-        if (access) {
-          localStorage.setItem("access", access);
+        // Use the new token management utility
+        if (access && refresh) {
+          setTokens(access, refresh);
         }
 
-        if (refresh) {
-          localStorage.setItem("refresh", refresh);
-        }
+        // Store user data in localStorage  
         if (user) {
           localStorage.setItem("user", JSON.stringify(user));
         }

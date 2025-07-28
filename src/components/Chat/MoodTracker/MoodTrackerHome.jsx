@@ -166,7 +166,7 @@ export const MoodTrackerHome = () => {
     try {
       const moodData = {
         mood: selectedMood,
-        date: new Date().toISOString().split('T')[0] // Format: YYYY-MM-DD
+        date: new Date().toLocaleDateString('en-CA') 
       };
 
       const response = await axios.post('/api/mood-tracker/entries/', moodData);
