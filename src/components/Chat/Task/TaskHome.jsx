@@ -113,7 +113,7 @@ export const TaskHome = () => {
   };
 
   return (
-    <div className=" h-screen   p-6">
+    <div className="lg:h-screen h-full  p-6 ">
       {/* Header */}
       <div className=" max-w-7xl mx-auto mb-8">
         <div className="text-center mb-8">
@@ -129,7 +129,7 @@ export const TaskHome = () => {
 
       {/* UI Layout */}
       <div className="max-w-7xl mx-auto mb-10 ">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:h-[600px]">
           {/* Left Column */}
           <div className="lg:col-span-1">
             <ProgressOverview
@@ -152,7 +152,7 @@ export const TaskHome = () => {
 
             {/* Bottom Row - Only show for non-breathing tabs */}
             {activeTab !== "breathing" && activeTab !== "affirmation" && (
-              <div className="flex-1">
+              <div className="flex-1 ">
                 <div className="bg-[#272f3c] rounded-lg p-6 h-full border border-gray-600">
                   {renderBottomContent()}
                 </div>

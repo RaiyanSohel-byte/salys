@@ -102,8 +102,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="lg:flex items-center">
+    <div className=" pb-10 bg-[#0F1725]">
+      <div className="lg:flex items-center ">
         {/* Left div */}
         <div
           className="w-full md:w-1/2 md:block hidden"

@@ -4,7 +4,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { LuHistory } from "react-icons/lu";
 import { BiTargetLock } from "react-icons/bi";
-import { FaHeadphones } from "react-icons/fa";
+import { FaHeadphones, FaHome } from "react-icons/fa";
 import { IoBookOutline } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import { TbArrowBigUpLine } from "react-icons/tb";
@@ -14,12 +14,16 @@ import { BsThreeDots } from "react-icons/bs";
 import { IoMdShare } from "react-icons/io";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { RxCross2 } from "react-icons/rx";
+import { useSubscription } from "@/providers/SubscriptionProvider";
+import { MdHealthAndSafety } from "react-icons/md";
 
 const MobileNav = ({ isOpened, toggleOpen }) => {
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const pathname = usePathname();
 
+  const { subscription, setSubscription } = useSubscription();
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
  
   const onSearchSubmit = (e) => {
     e.preventDefault();
@@ -93,33 +97,33 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               { <h1>Start New Session</h1>}
             </Link>
             <Link
-              href={"/search"}
+              href={"/chat/history"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/search" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/history" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <LuHistory size={24} className="w-6 flex-shrink-0" />
               { <h1>Search History</h1>}
             </Link>
             <Link
-              href={"/"}
+              href={"/chat/mood_tracker"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/mood_tracker" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <BiTargetLock size={24} className="w-6 flex-shrink-0" />
-              { <h1>Mode Tracker</h1>}
+              { <h1>Mood Tracker</h1>}
             </Link>
             <Link
-              href={"/"}
+              href={"/chat/reminder"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/reminder" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <ReminderIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/"
+                  pathname === "/chat/reminder"
                     ? "fill-[#0056F6]"
                     : "fill-white group-hover:fill-[#0056F6]"
                 }`}
@@ -127,15 +131,15 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               { <h1>Reminders</h1>}
             </Link>
             <Link
-              href={"/"}
+              href={"/chat/task"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/task" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <TaskIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/"
+                  pathname === "/chat/task"
                     ? "fill-[#0056F6]"
                     : "fill-white group-hover:fill-[#0056F6]"
                 }`}
@@ -143,288 +147,70 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               { <h1>Task</h1>}
             </Link>
             <Link
-              href={"/"}
+              href={"/chat/music"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/music" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <FaHeadphones size={24} className="w-6 flex-shrink-0" />
               { <h1>Music</h1>}
             </Link>
             <Link
-              href={"/"}
+              href={"/chat/resources"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/resources" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <IoBookOutline size={24} className="w-6 flex-shrink-0" />
               { <h1>Resources</h1>}
             </Link>
+            <Link
+              href={"/"}
+              className={`flex items-center hover:bg-white hover:text-[#0056F6]  px-2.5 py-3 rounded-sm font-semibold ${
+                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+              }`}
+            >
+              <FaHome size={24} className="w-6 flex-shrink-0" />
+              { <h1 className=" px-3"> Return to Home</h1>}
+            </Link>
           </nav>
-          <nav id="searchNav" className={`pt-5 max-h-[400px] pb-36 overflow-y-auto`}>
-            <h1 className=" text-[16px] font-semibold px-3 ">Chats History</h1>
-            <form
-  onSubmit={onSearchSubmit}
-  className="relative mt-2 flex items-center overflow-hidden rounded-sm w-full max-w-sm"
->
-  <input
-    type="text"
-    onBlur={toggleSearch}
-    name="search"
-    className="flex-1 rounded-sm bg-white text-blue-800 py-1 px-2 focus:outline-none"
-  />
-
-  <div
-    className={`absolute top-0 right-0 h-full flex items-center transition-all duration-500 ${
-      isSearchExpanded ? "w-full" : "w-[40px]"
-    }`}
-  >
-    <button
-      type="submit"
-      className="bg-blue-700 px-2 py-1 flex items-center justify-center"
-    >
-      <IoSearchOutline size={24} />
-    </button>
-   
-    <h1
-      onClick={toggleSearch}
-      className={`flex-1 bg-blue-700 text-center text-white text-[16px] font-semibold py-1 whitespace-nowrap overflow-hidden transition-all duration-500 ${
-        isSearchExpanded ? "opacity-100 max-w-full px-2" : "opacity-0 max-w-0 px-0"
-      }`}
-    >
-      Search
-    </h1>
-  </div>
-            </form>
-
-
-              <h1 className=" mt-5 mb-2 ml-2.5 font-semibold text-[16px]">
-                Today
-              </h1>
-            <div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_2")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                <dialog id="my_modal_2" className="modal">
-                   <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-40 absolute"
-                    style={{
-                      right: `${modalPosition.x+60}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_3")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                <dialog id="my_modal_3" className="modal">
-                   <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-40 absolute"
-                    style={{
-                      right: `${modalPosition.x+60}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-              </div>
-            </div>
-              <h1 className=" mt-5 mb-2 ml-2.5 font-semibold text-[16px]">
-                Yesterday
-              </h1>
-            <div >
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_4")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_4" className="modal">
-                   <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-40 absolute"
-                    style={{
-                      right: `${modalPosition.x+60}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_5")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_5" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-40 absolute"
-                    style={{
-                      right: `${modalPosition.x+60}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_6")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_6" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-40 absolute"
-                    style={{
-                      right: `${modalPosition.x+60}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-            </div>
-          </nav>
+          
         </div>
-        <div onClick={() => {
-            // First set the flag in localStorage
-            localStorage.setItem('scrollToPricing', 'true');
-            
-           
-            window.location.href = '/';
-          }} id="subscription" className={`flex items-center rounded-t-xl bg-[#0056F6] w-full px-5 py-2 gap-3 absolute bottom-0 `}>
-          <TbArrowBigUpLine size={24} />
-          <div>
-            <h1 className=" font-semibold text-[16px]">Subscription</h1>
-            <p className=" font-normal text-sm">More advanced feature</p>
-          </div>
-        </div>
+
+
+         <div>
+                  {subscription&&subscription[0]?.status=="active" ? (
+                    <div
+                      className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer  w-full px-5 py-2 gap-3 absolute bottom-0 `}
+                    >
+                      <MdHealthAndSafety className=" text-green-400" size={24} />
+                      <div>
+                        <h1 className=" font-semibold text-[16px]">
+                          {user.name || "Unknown User"}
+                          <p className=" font-normal text-sm">{subscription[0]?.plan_name} plan</p>
+                        </h1>
+        
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      onClick={() => {
+                        // First set the flag in localStorage
+                        localStorage.setItem("scrollToPricing", "true");
+        
+                        // Navigate to the home page with a hash fragment
+                        window.location.href = "/";
+                      }}
+                      className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer w-full px-5 py-2 gap-3 absolute bottom-0 `}
+                    >
+                      <TbArrowBigUpLine size={24} />
+                      <div>
+                        <h1 className=" font-semibold text-[16px]">Subscription</h1>
+                        <p className=" font-normal text-sm">More advanced feature</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
       </div>
     </div>
   );

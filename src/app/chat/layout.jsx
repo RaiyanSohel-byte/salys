@@ -34,9 +34,9 @@ export default function RootLayout({ children }) {
         <ProtectedRoute>
           <div className="flex min-h-screen flex-col lg:flex-row">
             <Nav />
-            <div className="flex-1 main-content transition-all lg:ml-[250px] duration-300 relative">
+            <div className="flex-1  transition-all ml-0 lg:ml-[250px] duration-300 relative">
               
-              <div className="absolute top-5 right-5 z-50">
+              <div className="absolute lg:top-5 -top-10 right-2 lg:right-5 z-50">
                 <ProfileDialog />
               </div>
               <div

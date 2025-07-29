@@ -105,7 +105,7 @@ export const History = () => {
   }
 
   return (
-    <div className="">
+    <div className=" px-3">
       {historyData.length > 0 ? (
         <div className="space-y-3">
           {historyData.map((session) => (

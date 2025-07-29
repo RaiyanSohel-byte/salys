@@ -34,7 +34,7 @@ export const ProgressOverview = ({
               Weekly Streak
             </span>
           </div>
-          <div className="flex gap-1">
+          <div className="flex gap-3 items-center">
             {streak.length > 0 &&
               streak.map((day) => (
                 <div

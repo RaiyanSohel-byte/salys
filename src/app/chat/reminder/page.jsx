@@ -11,7 +11,7 @@ const Page = () => {
     const isActive = subscription[0]?.status === "active" && currentDate <= subscriptionEndDate;
     if (isActive) {
       return (
-        <div className='px-52 py-5'>
+        <div className='px-3 lg:px-52 py-5'>
           <ReminderHome />
         </div>
       );

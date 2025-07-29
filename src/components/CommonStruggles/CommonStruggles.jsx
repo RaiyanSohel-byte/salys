@@ -6,12 +6,12 @@ import { CgArrowTopRightO } from 'react-icons/cg'
 const CommonStruggles = () => {
   return (
     <div>
-         <div className='pb-10 bg-black text-white lg:px-0 px-4'>
+         <div className='lg:pb-10  bg-black text-white lg:px-0 px-4'>
       {/*Section-2*/}
       <div style={{
         background: 'radial-gradient(circle at center, #0129F470 5%, rgba(1, 12, 74, 0.20) 50%, #010C4A33 70%)',
-      }} className='h-[532px] flex justify-center items-center text-center px-4'>
-        <p className='lg:py-14 text-2xl lg:text-[66px]  font-serif font-bold'>You’re Not Alone and You Don’t Have <br /> to Face it <span className='italic text-blue-600'>Alone</span>.</p>
+      }} className='lg:h-[532px] py-5 lg:py-0 flex justify-center items-center text-center px-4'>
+        <p className='lg:py-14 text-2xl lg:text-[66px] font-serif font-bold'>You’re Not Alone and You Don’t Have <br /> to Face it <span className='italic text-blue-600'>Alone</span>.</p>
       </div>
 
       {/*Section-3*/}

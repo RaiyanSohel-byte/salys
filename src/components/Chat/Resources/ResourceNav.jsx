@@ -105,7 +105,7 @@ const sampleWorkbooks = [
   return (
     <div className="py-5">
       {/* Navigation Bar */}
-      <div className="bg-[#0e1c33] flex gap-3 text-white rounded-lg mb-8">
+      <div className="bg-[#0e1c33] flex flex-wrap items-center gap-3 text-white rounded-lg mb-8">
         {filterCategories.map((category) => (
           <div
             key={category}

@@ -84,13 +84,13 @@ export const MusicNav = () => {
   };
 
   return (
-    <div className="py-5">
+    <div className="py-5 px-3">
       {/* Navigation Bar */}
-      <div className="bg-[#0e1c33] flex gap-3 text-white rounded-lg mb-8">
+      <div className="bg-[#0e1c33] flex items-center flex-wrap gap-3 text-white rounded-lg mb-8">
         {filterCategories.map((category) => (
           <div
             key={category}
-            className={`rounded-md px-5 py-4 cursor-pointer transition-all duration-300 ${
+            className={`rounded-md px-2 md:px-5 py-4 cursor-pointer transition-all duration-300 ${
               activeFilter === category
                 ? "bg-primary"
                 : "bg-transparent hover:bg-primary/20"
@@ -103,7 +103,7 @@ export const MusicNav = () => {
       </div>
 
       {/* Music Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:px-0 px-3 gap-6">
         {filteredMusic.map((music) => (
           <MusicCard 
             key={music.id} 

@@ -52,7 +52,7 @@ const ProfileDialog = () => {
                          className="rounded-full border-4 border-blue-500"
                        />
                      ) : (
-                      <FaCircleUser size={50} className='text-blue-100 cursor-pointer'/>
+                      <FaCircleUser  className='text-blue-100 lg:w-14 w-8 h-8 lg:h-14 cursor-pointer'/>
                      )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[1075px] h-[550px] overflow-y-auto bg-blue-950 [&>button]:text-white">
