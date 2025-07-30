@@ -11,7 +11,7 @@ export default function ClientLayout({ children }) {
   const shouldHideLayout =
     pathname.startsWith("/chat") ||
     pathname === "/login" ||
-    pathname === "/signup";
+    pathname === "/signup"|| pathname.startsWith("/users");
 
   // const shouldHideLayout = hiddenRoutes.includes(pathname);
 
