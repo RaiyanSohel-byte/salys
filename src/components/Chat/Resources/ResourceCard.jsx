@@ -372,7 +372,7 @@ export const ResourceCard = ({ workbook, onFavoritesUpdate }) => {
                     <div className="flex flex-col items-center space-y-4">
                       <Document
                         file={{
-                          url: getPdfUrl(),
+                          url: workbook.pdf_file,
                           httpHeaders: {
                             Accept: "application/pdf",
                           },

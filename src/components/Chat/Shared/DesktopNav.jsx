@@ -18,6 +18,7 @@ import { useSubscription } from "@/providers/SubscriptionProvider";
 import { sub } from "date-fns";
 import { useAxios } from "@/providers/AxiosProvider";
 import { MdHealthAndSafety } from "react-icons/md";
+import Image from "next/image";
 
 const DesktopNav = () => {
   const axios = useAxios();
@@ -85,7 +86,12 @@ console.log(subscription, "subscription in desktop nav");
                 onClick={toggleNav}
                 className="w-10 h-10 flex items-center justify-center rounded-md text-xl bg-white text-[#0056F6] transition-colors font-bold"
               >
-                E
+                <Image
+                  src="/logo.png"
+                  alt="Logo"
+                  width={40}
+                  height={40}
+                />
               </button>
             </div>
           )}

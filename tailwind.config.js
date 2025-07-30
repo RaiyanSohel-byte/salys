@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        nunito: ['Nunito', 'sans-serif'],
+        nunito: ['var(--font-nunito)', 'sans-serif'],
         montserrat: ['Montserrat', 'sans-serif'],
         lemon: ['Lemon', 'cursive'],
       },
