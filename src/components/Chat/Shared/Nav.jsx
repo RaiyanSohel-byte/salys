@@ -14,7 +14,7 @@ const Nav = () => {
   };
   return (
     <>
-      <DesktopNav />
+      <DesktopNav className="hidden lg:block" />
 
       <div className=" block lg:hidden ">
 

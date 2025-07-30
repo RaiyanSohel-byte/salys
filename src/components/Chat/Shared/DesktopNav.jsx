@@ -46,9 +46,12 @@ const DesktopNav = () => {
   };
 
   useEffect(() => {
-    const mainContent = document.querySelector(".main-content");
-    if (mainContent) {
-      mainContent.style.marginLeft = isCollapsed ? "64px" : "250px";
+    // Only run on desktop screens (lg and up)
+    if (window.innerWidth >= 1024) {
+      const mainContent = document.querySelector(".main-content");
+      if (mainContent) {
+        mainContent.style.marginLeft = isCollapsed ? "64px" : "250px";
+      }
     }
   }, [isCollapsed]);
 

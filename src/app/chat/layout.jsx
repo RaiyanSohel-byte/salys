@@ -34,18 +34,12 @@ export default function RootLayout({ children }) {
         <ProtectedRoute>
           <div className="flex min-h-screen flex-col lg:flex-row">
             <Nav />
-            <div className="flex-1  transition-all ml-0 lg:ml-[250px] duration-300 relative">
-              
+            <div className="flex-1  transition-all ml-0 lg:ml-[250px] main-content duration-300 relative">
               <div className="absolute lg:top-5 -top-10 right-2 lg:right-5 z-50">
                 <ProfileDialog />
               </div>
-              <div
-                className="min-h-[100vh]  "
-                style={{
-                  background:
-                    "radial-gradient(circle at top right, #0129F480 , black 40%)",
-                }}
-              >
+              <div className=" relative min-h-screen bg-black overflow-hidden">
+                <div className="absolute top-[-100px] right-[-150px] w-[700px] h-[500px] bg-[#0056F6]/15 rounded-[50%] blur-[120px] pointer-events-none z-0"></div>
                 {children}
               </div>
             </div>
