@@ -1,5 +1,6 @@
 import React from "react";
 import { useGoogleLogin } from "@react-oauth/google";
+import { setTokens } from "@/lib/auth";
 
 export const GoogleBtnBackend = () => {
   // 1. We call the useGoogleLogin hook
@@ -11,7 +12,7 @@ export const GoogleBtnBackend = () => {
       // 3. We send the access_token to our backend
       try {
         const res = await fetch(
-          "http://localhost:8000/users/auth/google/",
+          "http://10.10.12.53:8000/users/auth/google/",
           {
             method: "POST",
             headers: {
@@ -28,12 +29,9 @@ export const GoogleBtnBackend = () => {
         console.log("Backend response:", data);
 
         if (res.ok) {
-          if (data.access) {
-            localStorage.setItem("access", data.access);
-          }
-          if (data.refresh) {
-            localStorage.setItem("refresh", data.refresh);
-          }
+          // Set tokens in both localStorage and cookies
+          setTokens(data.access, data.refresh);
+          
           window.location.href = "/chat";
         } else {
           console.error("Backend error:", data);

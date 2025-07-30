@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { AiFillGoogleCircle } from "react-icons/ai";
+import { removeTokens } from '@/lib/auth';
 
 export const GoogleSign = () => {
   const { data: session, status } = useSession();
@@ -43,9 +44,8 @@ export const GoogleSign = () => {
 
   const handleSignOut = async () => {
     try {
-      // Clear localStorage tokens
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+      // Clear tokens using utility function
+      removeTokens();
       localStorage.removeItem('user');
       
       await signOut({ callbackUrl: '/login' });

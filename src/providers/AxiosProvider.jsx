@@ -1,6 +1,7 @@
 "use client";
 import  { createContext, useContext } from 'react';
 import axios from 'axios';
+import { removeTokens, getTokens, setTokens, shouldRefreshToken } from '@/lib/auth';
 
 
 const axiosInstance = axios.create({
@@ -13,15 +14,24 @@ const axiosInstance = axios.create({
   withCredentials: false, 
 });
 
-
 axiosInstance.interceptors.request.use(
-  (config) => {
+  async (config) => {
+    const tokens = getTokens();
     
-    const token = typeof window !== 'undefined' ? localStorage.getItem('access') : null;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Add authorization header if access token exists
+    if (tokens.access) {
+      config.headers.Authorization = `Bearer ${tokens.access}`;
     }
-    
+ 
+    // Add current local time to every request
+    if (typeof window !== 'undefined') {
+      const localTime = new Date().toLocaleDateString();
+      const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      
+      // Send time data as headers to the backend
+      config.headers['X-Local-Time'] = localTime;
+      config.headers['X-Timezone'] = userTimezone;
+    }
     
     if (config.url && !config.url.startsWith('http') && config.url.startsWith('/api')) {
       
@@ -36,27 +46,98 @@ axiosInstance.interceptors.request.use(
 );
 
 
+// Track if a refresh is already in progress to prevent multiple refresh attempts
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  
+  failedQueue = [];
+};
+
 axiosInstance.interceptors.response.use(
   (response) => {
     console.log('Response received:', response.status);
     return response;
   },
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
     
     console.error('Response error:', error);
     if (error.request && !error.response) {
       console.error('Network error detected - no response received');
     }
     
-    
-    if (error.response?.status === 401) {
-      // Remove the correct token names that match what you're setting in the Login component
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+    // Handle 401 errors (unauthorized)
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        // If refresh is already in progress, queue this request
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then(token => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return axiosInstance(originalRequest);
+        }).catch(err => {
+          return Promise.reject(err);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
       
-      // Check if we're not already on the login page to prevent redirect loops
-      if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
-        window.location.href = '/login';
+      try {
+        // Try to refresh the token
+        const tokens = getTokens();
+        if (tokens.refresh) {
+          console.log('🔄 Attempting to refresh access token...');
+          
+          const refreshResponse = await axios.post('http://10.10.12.53:8000/users/token/refresh/', {
+            refresh: tokens.refresh
+          });
+          
+          console.log('✅ Token refresh successful:', refreshResponse.data);
+          
+          if (refreshResponse.data.access && refreshResponse.data.refresh) {
+            // Update tokens with new access token AND new refresh token
+            setTokens(refreshResponse.data.access, refreshResponse.data.refresh);
+            
+            // Update the authorization header for the original request
+            originalRequest.headers.Authorization = `Bearer ${refreshResponse.data.access}`;
+            
+            // Process any queued requests with the new token
+            processQueue(null, refreshResponse.data.access);
+            isRefreshing = false;
+            
+            // Retry the original request with new token
+            return axiosInstance(originalRequest);
+          }
+        }
+        
+        throw new Error('No refresh token available');
+        
+      } catch (refreshError) {
+        console.error('❌ Token refresh failed:', refreshError);
+        
+        // Process queue with error
+        processQueue(refreshError, null);
+        isRefreshing = false;
+        
+        // If refresh fails, clear tokens and redirect to login
+        removeTokens();
+        
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+          console.log('🔄 Redirecting to login...');
+          window.location.href = '/login';
+        }
+        
+        return Promise.reject(refreshError);
       }
     }
     

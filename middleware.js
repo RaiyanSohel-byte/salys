@@ -1,18 +1,29 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server'
 
-export function middleware(request) {
-
-   const token = localStorage.getItem('access');
-   const refreshToken = localStorage.getItem('refresh');
-    if (!token && !refreshToken) {
-        console.error('No access or refresh token found in localStorage');
-        return NextResponse.redirect(new URL('/login', request.url));
+// This middleware should work with Next.js 15
+export default function middleware(request) {
+  console.log('🔥 MIDDLEWARE IS WORKING! Path:', request.nextUrl.pathname)
+  
+  const { pathname } = request.nextUrl
+  
+  // Only protect chat routes
+  if (pathname === '/chat' || pathname.startsWith('/chat/')) {
+    console.log('🛡️ PROTECTING:', pathname)
+    
+    const accessToken = request.cookies.get('access')?.value
+    const refreshToken = request.cookies.get('refresh')?.value
+    
+    if (!accessToken && !refreshToken) {
+      console.log('🚫 REDIRECTING - NO AUTH')
+      return NextResponse.redirect(new URL('/', request.url))
     }
-
-  return NextResponse.next();
+    
+    console.log('✅ AUTH FOUND - ALLOWING')
+  }
+  
+  return NextResponse.next()
 }
 
 export const config = {
-    matcher:['/chat','chat/:path*', ]
-};  
-
+  matcher: ['/chat/:path*']
+}

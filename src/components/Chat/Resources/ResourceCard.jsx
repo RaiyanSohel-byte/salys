@@ -239,7 +239,7 @@ export const ResourceCard = ({ workbook, onFavoritesUpdate }) => {
         <div className=" col-span-5 flex flex-col justify-between ">
           <div className="">
             <div className="flex w-full justify-between items-start">
-              <h3 className="text-[20px] text-darkText font-bold font-nunito ">
+              <h3 className="text-[20px] text-darkText text-wrap font-bold font-nunito ">
                 {workbook.title}
               </h3>
 

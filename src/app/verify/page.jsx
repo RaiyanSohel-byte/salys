@@ -99,15 +99,17 @@ function VerifyContent() {
   };
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${getBackgroundGradient()} flex items-center justify-center p-4`}>
-      <div className={`max-w-md w-full bg-white rounded-2xl shadow-2xl border-2 ${getCardBorder()} p-8 text-center`}>
+    <div className={`min-h-screen bg-gradient-to-br ${getBackgroundGradient()} flex items-center justify-center `}>
+      <div
+        className={` bg-white rounded-2xl shadow-2xl border-2 ${getCardBorder()} p-4 sm:p-6 md:p-8 text-center`}
+      >
         {/* Icon */}
-        <div className="mb-6 flex justify-center">
+        <div className="mb-4 sm:mb-6 flex justify-center">
           {getIcon()}
         </div>
 
         {/* Title */}
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-3 sm:mb-4">
           {status === 'verifying' && 'Email Verification'}
           {status === 'success' && 'Verification Successful!'}
           {status === 'error' && 'Verification Failed'}
@@ -115,13 +117,13 @@ function VerifyContent() {
         </h1>
 
         {/* Message */}
-        <p className="text-lg text-gray-600 mb-6 leading-relaxed">
+        <p className="text-base sm:text-lg text-gray-600 mb-4 sm:mb-6 leading-relaxed">
           {message}
         </p>
 
         {/* Success State */}
         {status === 'success' && (
-          <div className="bg-green-100 border border-green-200 rounded-lg p-4 mb-6">
+          <div className="bg-green-100 border border-green-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
             <p className="text-green-700 font-medium">
               Your email has been successfully verified!
             </p>
@@ -132,38 +134,38 @@ function VerifyContent() {
         )}
 
         {/* Action Buttons */}
-        <div className="space-y-3">
+        <div className="space-y-2 sm:space-y-3">
           {status === 'success' && (
-            <Link 
+            <Link
               href="/login"
-              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 group"
+              className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2 group"
             >
               Continue to Login
             </Link>
           )}
 
           {status === 'check-email' && (
-            <a 
+            <a
               href="mailto:"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
             >
               Visit Mail
             </a>
           )}
 
           {status === 'error' && (
-            <div className="space-y-3 flex flex-col gap-5">
-              <Link 
+            <div className=" flex flex-col gap-3 sm:gap-5">
+              <Link
                 href="/signup"
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
+                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
               >
                 Create New Account
               </Link>
-              <Link 
+              <Link
                 href="/login"
-                className="w-full  bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-200"
+                className="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 sm:py-3 px-4 sm:px-6 rounded-lg transition-colors duration-200"
               >
                 Back to Login
               </Link>
@@ -171,7 +173,7 @@ function VerifyContent() {
           )}
 
           {status === 'verifying' && (
-            <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-4">
+            <div className="bg-yellow-100 border border-yellow-200 rounded-lg p-3 sm:p-4">
               <p className="text-yellow-700 text-sm">
                 Please wait while we verify your email address...
               </p>
@@ -180,8 +182,8 @@ function VerifyContent() {
         </div>
 
         {/* Footer */}
-        <div className="mt-8 pt-6 border-t border-gray-200">
-          <p className="text-sm text-gray-500">
+        <div className="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-gray-200">
+          <p className="text-xs sm:text-sm text-gray-500">
             Need help?{' '}
             <Link href="/support" className="text-blue-500 hover:text-blue-600 font-medium">
               Contact Support
@@ -197,7 +199,7 @@ export default function page() {
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-50 flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl border-2 border-yellow-200 p-8 text-center">
+        <div className="lg:max-w-md max-w-sm w-72 lg:w-full bg-white rounded-2xl shadow-2xl border-2 border-yellow-200 lg:p-8 text-center">
           <div className="mb-6 flex justify-center">
             <MdHourglassEmpty className="text-6xl text-yellow-500 animate-pulse" />
           </div>

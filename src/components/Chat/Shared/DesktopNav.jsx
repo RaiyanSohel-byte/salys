@@ -7,69 +7,59 @@ import { IoIosArrowForward } from "react-icons/io";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { LuHistory } from "react-icons/lu";
 import { BiTargetLock } from "react-icons/bi";
-import { FaHeadphones } from "react-icons/fa";
+import { FaHeadphones, FaHome } from "react-icons/fa";
 import { IoBookOutline } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import { TbArrowBigUpLine } from "react-icons/tb";
 import Link from "next/link";
 import { BsThreeDots } from "react-icons/bs";
 import { IoMdShare } from "react-icons/io";
+import { useSubscription } from "@/providers/SubscriptionProvider";
+import { sub } from "date-fns";
+import { useAxios } from "@/providers/AxiosProvider";
+import { MdHealthAndSafety } from "react-icons/md";
 
 const DesktopNav = () => {
+  const axios = useAxios();
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const { subscription, setSubscription } = useSubscription();
+
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const pathname = usePathname();
+  useEffect(() => {
+    const fetchSubscription = async () => {
+      try {
+        const subscriptionData = await axios.get(
+          "/api/subscriptions/user-subscriptions/"
+        );
+        setSubscription(subscriptionData.data);
+      } catch (error) {
+        console.error("Error fetching subscription:", error);
+      }
+    };
+    fetchSubscription();
+  }, []);
 
   const toggleNav = () => {
     setIsCollapsed(!isCollapsed);
   };
-  const onSearchSubmit = (e) => {
-    e.preventDefault();
-    const value = e.target.search.value;
-  };
-  const toggleSearch = () => {
-    setIsSearchExpanded(!isSearchExpanded);
-  };
-
-  const handleModalClick = (event, modalId) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    const navRect = document.querySelector('.nav-container').getBoundingClientRect();
-    
-    // Calculate position relative to the nav container
-    let x = rect.right - navRect.left + 10; // 10px gap from the button
-    let y = rect.top - navRect.top;
-    
-    // Check if modal would go off-screen horizontally
-    const modalWidth = 208; // 52 * 4 = 208px (w-52)
-    const screenWidth = window.innerWidth;
-    
-    if (x + modalWidth > screenWidth) {
-      x = rect.left - navRect.left - modalWidth - 10; // Position to the left of the button
-    }
-    
-    // Check if modal would go off-screen vertically
-    const modalHeight = 100; // Approximate height
-    const screenHeight = window.innerHeight;
-    
-    if (y + modalHeight > screenHeight) {
-      y = screenHeight - modalHeight - 20; // Position near bottom with some padding
-    }
-    
-    setModalPosition({ x, y });
-    document.getElementById(modalId).showModal();
-  };
 
   useEffect(() => {
-    const mainContent = document.querySelector(".main-content");
-    if (mainContent) {
-      mainContent.style.marginLeft = isCollapsed ? "64px" : "250px";
+    // Only run on desktop screens (lg and up)
+    if (window.innerWidth >= 1024) {
+      const mainContent = document.querySelector(".main-content");
+      if (mainContent) {
+        mainContent.style.marginLeft = isCollapsed ? "64px" : "250px";
+      }
     }
   }, [isCollapsed]);
 
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+console.log(subscription, "subscription in desktop nav");
+
   return (
     <div>
-
       <div
         className={`hidden lg:block fixed  left-0 top-0 h-full text-white transition-all duration-300 z-50 nav-container font-nunito ${
           isCollapsed ? "w-16" : "w-[250px]"
@@ -81,9 +71,7 @@ const DesktopNav = () => {
         <div className="px-4 py-4">
           {!isCollapsed ? (
             <div className=" flex justify-between items-center">
-              <h1 className="text-xl font-lemon" >
-                Emothrive Therapy
-              </h1>
+              <h1 className="text-xl font-lemon">Emothrive Therapy</h1>
               <button
                 onClick={toggleNav}
                 className={`p-2 rounded-md group hover:bg-white hover:text-[#0056F6] transition-all`}
@@ -107,7 +95,9 @@ const DesktopNav = () => {
           <nav id="mainNav" className="space-y-2 flex flex-col gap-3">
             <Link
               href={"/chat"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
                 pathname === "/chat" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
@@ -115,33 +105,41 @@ const DesktopNav = () => {
               {!isCollapsed && <h1>Start New Session</h1>}
             </Link>
             <Link
-              href={"/search"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/search" ? "bg-white text-[#0056F6]" : ""
+              href={"/chat/history"}
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+                pathname === "/chat/history" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <LuHistory size={24} className="w-6 flex-shrink-0" />
               {!isCollapsed && <h1>Search History</h1>}
             </Link>
             <Link
-              href={"/"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+              href={"/chat/mood_tracker"}
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+                pathname === "/chat/mood_tracker"
+                  ? "bg-white text-[#0056F6]"
+                  : ""
               }`}
             >
               <BiTargetLock size={24} className="w-6 flex-shrink-0" />
               {!isCollapsed && <h1>Mode Tracker</h1>}
             </Link>
             <Link
-              href={"/"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+              href={"/chat/reminder"}
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
+                pathname === "/chat/reminder" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <ReminderIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/"
+                  pathname === "/chat/reminder"
                     ? "fill-[#0056F6]"
                     : "fill-white group-hover:fill-[#0056F6]"
                 }`}
@@ -149,15 +147,17 @@ const DesktopNav = () => {
               {!isCollapsed && <h1>Reminders</h1>}
             </Link>
             <Link
-              href={"/"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
-                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+              href={"/chat/task"}
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold group ${
+                pathname === "/chat/task" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <TaskIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/"
+                  pathname === "/chat/task"
                     ? "fill-[#0056F6]"
                     : "fill-white group-hover:fill-[#0056F6]"
                 }`}
@@ -166,7 +166,9 @@ const DesktopNav = () => {
             </Link>
             <Link
               href={"/chat/music"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
                 pathname === "/chat/music" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
@@ -175,274 +177,65 @@ const DesktopNav = () => {
             </Link>
             <Link
               href={"/chat/resources"}
-              className={`flex items-center ${isCollapsed ? "justify-center" : "gap-3"} hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
                 pathname === "/chat/resources" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
               <IoBookOutline size={24} className="w-6 flex-shrink-0" />
               {!isCollapsed && <h1>Resources</h1>}
             </Link>
-          </nav>
-
-          <nav id="searchNav" className={`${!isCollapsed ? "pt-10" : " hidden"} pb-32 max-h-[400px] overflow-y-auto`}>
-            <h1 className=" text-[16px] font-semibold px-3 ">Chats History</h1>
-            <form
-              onSubmit={onSearchSubmit}
-              className="rounded-sm mt-2 flex items-center overflow-hidden"
+            <Link
+              href={"/"}
+              className={`flex items-center ${
+                isCollapsed ? "justify-center" : "gap-3"
+              } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
+                pathname === "/" ? "bg-white text-[#0056F6]" : ""
+              }`}
             >
-              <input
-                type="text"
-                onBlur={toggleSearch}
-                name="search"
-                className=" rounded-sm bg-white text-blue-800  py-1 focus:outline-none px-2"
-              />
-              <div
-                className={` flex items-center duration-500 transition-all ${
-                  !isSearchExpanded
-                    ? "-translate-x-[197px]"
-                    : "-translate-x-[20px]"
-                } `}
-              >
-                <button type="submit" className=" bg-blue-700 px-2 p-1">
-                  <IoSearchOutline size={24} />
-                </button>
-                <h1
-                  onClick={() => toggleSearch()}
-                  className=" bg-blue-700 pr-[118px] px-1 text-[16px] font-semibold py-1"
-                >
-                  Search
-                </h1>
-              </div>
-            </form>
-              <h1 className=" mt-5 mb-2 ml-2.5 font-semibold text-[16px]">
-                Today
-              </h1>
-            <div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_7")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                <dialog id="my_modal_7" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-52 absolute"
-                    style={{
-                      left: `${modalPosition.x}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_8")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                <dialog id="my_modal_8" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-52 absolute"
-                    style={{
-                      left: `${modalPosition.x}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-              </div>
-            </div>
-              <h1 className=" mt-5 mb-2 ml-2.5 font-semibold text-[16px]">
-                Yesterday
-              </h1>
-            <div >
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_9")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_9" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-52 absolute"
-                    style={{
-                      left: `${modalPosition.x}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_1")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_1" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-52 absolute"
-                    style={{
-                      left: `${modalPosition.x}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-              <div className=" px-2.5 py-1 hover:bg-[#00000030] flex justify-between items-center">
-                <div>
-                  <h1>ACT Therapy...</h1>
-                  <p className=" text-[12px] font-normal">
-                    {"Today"},{"09:52 pm"}
-                  </p>
-                </div>
-                {/* modal calling button modal should be called by the iterating array index or the id in the array data */}
-                <BsThreeDots
-                  onClick={(e) => handleModalClick(e, "my_modal_10")}
-                  size={24}
-                  className="cursor-pointer"
-                />
-                {/* Modal starts for the three dots */}
-                {/* Modal id should be given by the id or the index of the iterating array */}
-                <dialog id="my_modal_10" className="modal">
-                  <div
-                    className="modal-box bg-[#FFFFFF4D] px-1 py-1 w-52 absolute"
-                    style={{
-                      left: `${modalPosition.x}px`,
-                      top: `${modalPosition.y}px`,
-                      transform: 'none',
-                      margin: 0
-                    }}
-                  >
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <IoMdShare size={24}/>
-                      <p className=" text-[16px] font-semibold ">Share</p>
-                    </div>
-                    <div className=" flex  my-2 rounded-sm items-center gap-1 px-2.5 py-1 hover:bg-[#00112F4D]">
-                      {" "}
-                      <RiDeleteBin6Line  size={24}/>
-                      <p className=" text-[16px] font-semibold ">Delete</p>
-                    </div>
-                  </div>
-                  <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                  </form>
-                </dialog>
-                {/* modal ends */}
-              </div>
-            </div>
+              <FaHome size={24} className="w-6 flex-shrink-0" />
+              {!isCollapsed && <h1> Return to Home</h1>}
+            </Link>
           </nav>
         </div>
-        <div 
-          onClick={() => {
-            // First set the flag in localStorage
-            localStorage.setItem('scrollToPricing', 'true');
-            
-            // Navigate to the home page with a hash fragment
-            window.location.href = '/';
-          }}
-          className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer ${!isCollapsed ? "pt-1" : " hidden"} w-full px-5 py-2 gap-3 absolute bottom-0 `}
-        >
-          <TbArrowBigUpLine size={24} />
-          <div>
-            <h1 className=" font-semibold text-[16px]">Subscription</h1>
-            <p className=" font-normal text-sm">More advanced feature</p>
-          </div>
+
+        <div>
+          {subscription&&subscription[0]?.status=="active" ? (
+            <div
+              className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer ${
+                !isCollapsed ? "pt-1" : " hidden"
+              } w-full px-5 py-2 gap-3 absolute bottom-0 `}
+            >
+              <MdHealthAndSafety className=" text-green-400" size={24} />
+              <div>
+                <h1 className=" font-semibold text-[16px]">
+                  {user.name || "Unknown User"}
+                  <p className=" font-normal text-sm">{subscription[0]?.plan_name} plan</p>
+                </h1>
+
+              </div>
+            </div>
+          ) : (
+            <div
+              onClick={() => {
+                // First set the flag in localStorage
+                localStorage.setItem("scrollToPricing", "true");
+
+                // Navigate to the home page with a hash fragment
+                window.location.href = "/";
+              }}
+              className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer ${
+                !isCollapsed ? "pt-1" : " hidden"
+              } w-full px-5 py-2 gap-3 absolute bottom-0 `}
+            >
+              <TbArrowBigUpLine size={24} />
+              <div>
+                <h1 className=" font-semibold text-[16px]">Subscription</h1>
+                <p className=" font-normal text-sm">More advanced feature</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

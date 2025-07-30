@@ -13,11 +13,20 @@ import { useAxios } from "@/providers/AxiosProvider";
 import { GoogleSign } from "@/components/GoogleSignIn/GoogleSign";
 import Link from "next/link";
 import { GoogleBtnBackend } from "../GoogleSignIn/GoogleBtnBackend";
+import { setTokens } from "@/lib/auth";
+import { useSubscription } from "@/providers/SubscriptionProvider";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const axios = useAxios();
+  const { setSubscription } = useSubscription();
+  const {
+  register: registerModal,
+  handleSubmit: handleSubmitModal,
+  formState: { errors: modalErrors },
+  reset: resetModal,
+} = useForm();
 
   const {
     register,
@@ -30,25 +39,58 @@ const Login = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleModalClick=()=>{
+    document.getElementById('forgotPasswordModal').showModal()
+  }
+
+  const handleForgotPassword = async (data) => {
+    const { email } = data;
+    console.log(email,data);
+    try {
+      const response = await axios.post("/users/password/reset/", { email });
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Reset Link Sent!",
+          text: "Please check your email for the password reset link.",
+          icon: "success",
+          background: "#091c7c",
+          color: "#ffffff",
+          confirmButtonColor: "#050714",
+        });
+        resetModal();
+        document.getElementById('forgotPasswordModal').close();
+      }
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send reset link. Please try again.",
+        icon: "error",
+        background: "#091c7c",
+        color: "#ffffff",
+        confirmButtonColor: "#050714",
+      });
+    }
+
+  }
+
   const onSubmit = async (data) => {
-    
     const { email, password } = data;
 
     try {
       setLoading(true);
       const response = await axios.post("/users/login/", { email, password });
-
-
       if (response.status === 201 || response.status === 200) {
-        const { access, refresh ,user } = response.data;
+        const { access, refresh, user } = response.data;
 
-        if (access) {
-          localStorage.setItem("access", access);
+        
+
+        // Use the new token management utility
+        if (access && refresh) {
+          setTokens(access, refresh);
         }
 
-        if (refresh) {
-          localStorage.setItem("refresh", refresh);
-        }
+        // Store user data in localStorage  
         if (user) {
           localStorage.setItem("user", JSON.stringify(user));
         }
@@ -101,8 +143,8 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <div className="lg:flex items-center">
+    <div className=" pb-10 bg-[#0F1725]">
+      <div className="lg:flex items-center ">
         {/* Left div */}
         <div
           className="w-full md:w-1/2 md:block hidden"
@@ -189,6 +231,16 @@ const Login = () => {
                   {errors.password.message}
                 </p>
               )}
+              <div>
+                <button>
+                  <p
+                    onClick={handleModalClick}
+                    className="text-white text-sm cursor-pointer mb-2"
+                  >
+                    Forgot Password?
+                  </p>
+                </button>
+              </div>
               <button
                 type="submit"
                 disabled={loading}
@@ -213,6 +265,26 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <dialog id="forgotPasswordModal" className="modal">
+  <div className="modal-box">
+    <form method="dialog">      
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 className="font-bold text-2xl text-center py-2 ">Enter your email</h3>
+   <form onSubmit={handleSubmitModal(handleForgotPassword)}>
+  <input
+    type="email"
+    name="email"
+    placeholder="Email address"
+    className="input input-bordered w-full"
+    {...registerModal("email", { required: "Email is required" })}
+  />
+  <button type="submit" className="btn btn-primary w-full mt-4">
+    Send Reset Link
+  </button>
+</form>
+  </div>
+</dialog>
     </div>
   );
 };

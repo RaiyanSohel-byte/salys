@@ -4,6 +4,7 @@ import DesktopNav from "./DesktopNav";
 import { RiMenu4Line } from "react-icons/ri";
 import { CgProfile } from "react-icons/cg";
 import MobileNav from "./MobileNav";
+import ProfileDialog from "@/components/Profile/ProfileDialog";
 
 
 const Nav = () => {
@@ -13,14 +14,14 @@ const Nav = () => {
   };
   return (
     <>
-      <DesktopNav />
+      <DesktopNav className="hidden lg:block" />
 
       <div className=" block lg:hidden ">
 
-        <div className=" flex py-2 items-center justify-between px-4 w-screen bg-gradient-to-br from-[#0129F4] to-[#00062780] ">
+        <div className=" flex py-2 items-center justify-between px-4 w-screen bg-[#081335] text-white ">
           <RiMenu4Line onClick={toggleOpen} size={24}/>
           <h1 className=" text-xl text" style={{fontFamily:"lemon, sans-serif"}}>EmoThrive</h1>
-          <CgProfile size={24}/>
+        <div></div>
         </div>
 
         <div>

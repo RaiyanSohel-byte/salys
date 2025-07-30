@@ -1,9 +1,10 @@
-'use client';
+"use client";
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
+// Therapy data object
 const therapyData = {
   a: {
     title: 'Cognitive Behavioral Therapy (CBT)',
@@ -20,12 +21,17 @@ const therapyData = {
     description: `ACT teaches clients to stop avoiding, denying, or struggling with their inner emotions and instead accept them as appropriate responses to certain situations. Through exercises in mindfulness, values clarification, and committed action, ACT helps individuals face life's challenges while maintaining psychological flexibility. It is effective for chronic pain, OCD, anxiety, and major life transitions, with AI tools offering real-time guidance in practicing presence and purpose.`,
     image: '/project-image/rectangle3.png',
   },
-
 };
 
+// Loading fallback component
+const LoadingFallback = () => (
+  <div className="min-h-screen flex items-center justify-center text-white bg-black">
+    <p className="text-xl">Loading therapy details...</p>
+  </div>
+);
 
-
-const TheraphyDetails = () => {
+// Therapy details component
+const TheraphyDetailsContent = () => {
   const searchParams = useSearchParams();
   const type = searchParams.get('type');
   const therapy = therapyData[type];
@@ -38,7 +44,6 @@ const TheraphyDetails = () => {
     );
   }
 
-  
   return (
     <div className="h-full bg-black text-white">
       <section className="text-white">
@@ -66,7 +71,6 @@ const TheraphyDetails = () => {
               >
                 Back to theraphy
               </Link>
-            
             </div>
           </div>
         </div>
@@ -75,4 +79,11 @@ const TheraphyDetails = () => {
   );
 };
 
-export default TheraphyDetails;
+// Main page component with Suspense
+export default function Page() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <TheraphyDetailsContent />
+    </Suspense>
+  );
+}
