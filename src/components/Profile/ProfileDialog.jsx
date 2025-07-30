@@ -55,7 +55,7 @@ const ProfileDialog = () => {
                       <FaCircleUser  className='text-blue-100 lg:w-[50px] w-8 h-8 lg:h-[50px] cursor-pointer'/>
                      )}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[1075px] h-[550px] overflow-y-auto bg-blue-950 [&>button]:text-white">
+      <DialogContent className="sm:max-w-[1075px]  overflow-y-auto bg-blue-950 [&>button]:text-white">
         <DialogHeader>
           <DialogTitle className="flex justify-between items-center">
             <h1 className='text-center text-2xl font-bold text-white mb-6 flex-1'>Your Profile</h1>
