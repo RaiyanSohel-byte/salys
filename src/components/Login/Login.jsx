@@ -21,6 +21,12 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const axios = useAxios();
   const { setSubscription } = useSubscription();
+  const {
+  register: registerModal,
+  handleSubmit: handleSubmitModal,
+  formState: { errors: modalErrors },
+  reset: resetModal,
+} = useForm();
 
   const {
     register,
@@ -32,6 +38,41 @@ const Login = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+
+  const handleModalClick=()=>{
+    document.getElementById('forgotPasswordModal').showModal()
+  }
+
+  const handleForgotPassword = async (data) => {
+    const { email } = data;
+    console.log(email,data);
+    try {
+      const response = await axios.post("/users/password/reset/", { email });
+      if (response.status === 200) {
+        Swal.fire({
+          title: "Reset Link Sent!",
+          text: "Please check your email for the password reset link.",
+          icon: "success",
+          background: "#091c7c",
+          color: "#ffffff",
+          confirmButtonColor: "#050714",
+        });
+        resetModal();
+        document.getElementById('forgotPasswordModal').close();
+      }
+    } catch (error) {
+      console.error("Forgot password error:", error);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send reset link. Please try again.",
+        icon: "error",
+        background: "#091c7c",
+        color: "#ffffff",
+        confirmButtonColor: "#050714",
+      });
+    }
+
+  }
 
   const onSubmit = async (data) => {
     const { email, password } = data;
@@ -190,6 +231,16 @@ const Login = () => {
                   {errors.password.message}
                 </p>
               )}
+              <div>
+                <button>
+                  <p
+                    onClick={handleModalClick}
+                    className="text-white text-sm cursor-pointer mb-2"
+                  >
+                    Forgot Password?
+                  </p>
+                </button>
+              </div>
               <button
                 type="submit"
                 disabled={loading}
@@ -214,6 +265,26 @@ const Login = () => {
           </div>
         </div>
       </div>
+      <dialog id="forgotPasswordModal" className="modal">
+  <div className="modal-box">
+    <form method="dialog">      
+      <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 className="font-bold text-2xl text-center py-2 ">Enter your email</h3>
+   <form onSubmit={handleSubmitModal(handleForgotPassword)}>
+  <input
+    type="email"
+    name="email"
+    placeholder="Email address"
+    className="input input-bordered w-full"
+    {...registerModal("email", { required: "Email is required" })}
+  />
+  <button type="submit" className="btn btn-primary w-full mt-4">
+    Send Reset Link
+  </button>
+</form>
+  </div>
+</dialog>
     </div>
   );
 };
