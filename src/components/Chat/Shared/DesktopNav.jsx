@@ -66,7 +66,7 @@ console.log(subscription, "subscription in desktop nav");
           isCollapsed ? "w-16" : "w-[250px]"
         }`}
         style={{
-          background: "linear-gradient(to top, #000627, #0129F4)",
+          background: "linear-gradient(to bottom, #091d81, #000627)",
         }}
       >
         <div className="px-4 py-4">
@@ -209,7 +209,7 @@ console.log(subscription, "subscription in desktop nav");
         <div>
           {subscription&&subscription[0]?.status=="active" ? (
             <div
-              className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer ${
+              className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer ${
                 !isCollapsed ? "pt-1" : " hidden"
               } w-full px-5 py-2 gap-3 absolute bottom-0 `}
             >
@@ -231,7 +231,7 @@ console.log(subscription, "subscription in desktop nav");
                 // Navigate to the home page with a hash fragment
                 window.location.href = "/";
               }}
-              className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer ${
+              className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer ${
                 !isCollapsed ? "pt-1" : " hidden"
               } w-full px-5 py-2 gap-3 absolute bottom-0 `}
             >

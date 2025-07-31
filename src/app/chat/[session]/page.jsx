@@ -246,7 +246,7 @@ const ChatSession = () => {
                     <div
                       className={`text-start max-w-2xl p-3 rounded-lg markdown-content ${
                         item.sender === "user"
-                          ? "bg-[#0059FF] text-white ml-auto"
+                          ? "bg-[#0059FF24] text-white ml-auto"
                           : "bg-[#FFFFFF1A] text-white mr-auto"
                       }`}
                     >
@@ -305,9 +305,12 @@ const ChatSession = () => {
             <div className="relative w-full">
               <Input
                 {...register("message")}
-                className="py-8 pr-20 text-white w-full bg-[#FFFFFF33] backdrop-blur-md border border-white/20"
+                className="py-10 pr-20 text-white w-full bg-[#FFFFFF33] outline-none border-0 backdrop-blur-md  border-white/20"
                 type="text"
                 placeholder="Continue the conversation..."
+                autofill="off"
+                autoComplete="off"
+               
                 onKeyPress={handleKeyPress}
               />
               <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-4 text-2xl text-gray-800">

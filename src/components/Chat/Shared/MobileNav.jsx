@@ -68,7 +68,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
       <div
         className={`w-[250px] fixed left-0 top-0 h-full text-white transition-all duration-300 z-50 nav-container font-nunito transform ${!isOpened ? '-translate-x-96' : 'translate-x-0'}`}
         style={{
-          background: "linear-gradient(to top, #000627, #0129F4)",
+          background: "linear-gradient(to bottom, #091d81, #000627)",
         }}
       >
         <div className="px-4 py-4">
@@ -166,7 +166,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
             </Link>
             <Link
               href={"/"}
-              className={`flex items-center hover:bg-white hover:text-[#0056F6]  px-2.5 py-3 rounded-sm font-semibold ${
+              className={`flex items-center hover:bg-white hover:text-[#001BA7]  px-2.5 py-3 rounded-sm font-semibold ${
                 pathname === "/" ? "bg-white text-[#0056F6]" : ""
               }`}
             >
@@ -181,7 +181,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
          <div>
                   {subscription&&subscription[0]?.status=="active" ? (
                     <div
-                      className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer  w-full px-5 py-2 gap-3 absolute bottom-0 `}
+                      className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer  w-full px-5 py-2 gap-3 absolute bottom-0 `}
                     >
                       <MdHealthAndSafety className=" text-green-400" size={24} />
                       <div>
