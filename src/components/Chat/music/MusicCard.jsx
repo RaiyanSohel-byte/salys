@@ -22,13 +22,14 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
   const [isAddingToFavorites, setIsAddingToFavorites] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMetadataLoaded, setIsMetadataLoaded] = useState(false);
-  
+
   const audioRef = useRef(null);
   const seekingRef = useRef(false);
   const lastUpdateTimeRef = useRef(0);
-  
+  const playbackCacheRef = useRef({}); // Add at the top of your component, after useRef declarations
+
   const axios = useAxios();
-  
+
   // Safe localStorage access for SSR
   const UserId = typeof window !== "undefined" && localStorage.getItem("user")
     ? JSON.parse(localStorage.getItem("user")).id
@@ -114,7 +115,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   const handlePlayPause = async () => {
     if (!audioRef.current || !isMetadataLoaded) return;
-    
+
     try {
       setIsLoading(true);
       if (isPlaying) {
@@ -135,29 +136,54 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
     }
   };
 
-  // Throttled time update to prevent excessive state updates
+  // Restore position from cache/localStorage on mount or music.id change
+  useEffect(() => {
+    let cachedTime = 0;
+    // Try in-memory cache first
+    if (playbackCacheRef.current[music.id]) {
+      cachedTime = playbackCacheRef.current[music.id];
+    } else {
+      // Fallback to localStorage
+      const key = `music_playback_${music.id}`;
+      const stored = typeof window !== "undefined" ? localStorage.getItem(key) : null;
+      if (stored) {
+        cachedTime = parseFloat(stored) || 0;
+      }
+    }
+    setCurrentTime(cachedTime);
+    if (audioRef.current) {
+      audioRef.current.currentTime = cachedTime;
+    }
+  }, [music.id]);
+
+  // Save position to cache and localStorage on time update
   const handleTimeUpdate = useCallback(() => {
     if (!audioRef.current || seekingRef.current) return;
-    
+
     const now = Date.now();
     if (now - lastUpdateTimeRef.current < 100) return; // Throttle to 10fps
-    
+
     const newTime = audioRef.current.currentTime;
     if (!isNaN(newTime) && Math.abs(newTime - currentTime) > 0.1) {
       setCurrentTime(newTime);
       lastUpdateTimeRef.current = now;
+      // Save to cache and localStorage
+      playbackCacheRef.current[music.id] = newTime;
+      if (typeof window !== "undefined") {
+        localStorage.setItem(`music_playback_${music.id}`, newTime);
+      }
     }
-  }, [currentTime]);
+  }, [currentTime, music.id]);
 
   const handleLoadedMetadata = () => {
     if (audioRef.current && !isNaN(audioRef.current.duration)) {
       const audioDuration = audioRef.current.duration;
       console.log(`Metadata loaded for ${music.title}:`, { duration: audioDuration });
-      
+
       setDuration(audioDuration);
       setIsMetadataLoaded(true);
       audioRef.current.volume = isMuted ? 0 : volume;
-      
+
       // Restore saved position if exists
       if (currentTime > 0 && currentTime < audioDuration) {
         audioRef.current.currentTime = currentTime;
@@ -194,7 +220,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
     const clickX = e.clientX - rect.left;
     const width = rect.width;
     const newVolume = Math.max(0, Math.min(1, clickX / width));
-    
+
     setVolume(newVolume);
     if (audioRef.current) {
       audioRef.current.volume = newVolume;
@@ -204,7 +230,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   const toggleMute = () => {
     if (!audioRef.current) return;
-    
+
     if (isMuted) {
       const newVolume = volume === 0 ? 0.5 : volume;
       setVolume(newVolume);
@@ -217,7 +243,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
   };
 
   const handleProgressClick = (e) => {
-    if (!audioRef.current || !isMetadataLoaded || duration <= 0) {
+    if (!audioRef.current || duration <= 0) {
       console.log(`Progress click blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded,
@@ -225,7 +251,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
       });
       return;
     }
-    
+
     const progressBar = e.currentTarget;
     const rect = progressBar.getBoundingClientRect();
     const clickX = e.clientX - rect.left;
@@ -233,14 +259,12 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
     const newTime = Math.max(0, Math.min(duration, (clickX / width) * duration));
 
     console.log(`Seeking to ${newTime.toFixed(2)}s for ${music.title}`);
-    
+
     seekingRef.current = true;
-    
+
     try {
       audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-      
-      // Clear seeking flag after a short delay
+      // setCurrentTime(newTime); // REMOVE THIS LINE
       setTimeout(() => {
         seekingRef.current = false;
       }, 100);
@@ -252,7 +276,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   // FIXED: Skip backward function with proper state management
   const handleSkipBackward = () => {
-    if (!audioRef.current || !isMetadataLoaded) {
+    if (!audioRef.current ) {
       console.log(`Skip backward blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded
@@ -262,16 +286,14 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
     const currentAudioTime = audioRef.current.currentTime;
     const newTime = Math.max(0, currentAudioTime - 10);
-    
+
     console.log(`Skipping backward for ${music.title}: ${currentAudioTime.toFixed(2)}s → ${newTime.toFixed(2)}s`);
-    
+
     seekingRef.current = true;
-    
+
     try {
       audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-      
-      // Clear seeking flag after a short delay
+      // setCurrentTime(newTime); // REMOVE THIS LINE
       setTimeout(() => {
         seekingRef.current = false;
       }, 100);
@@ -283,7 +305,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   // FIXED: Skip forward function with proper state management
   const handleSkipForward = () => {
-    if (!audioRef.current || !isMetadataLoaded) {
+    if (!audioRef.current ) {
       console.log(`Skip forward blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded
@@ -292,24 +314,23 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
     }
 
     const currentAudioTime = audioRef.current.currentTime;
+    console.log(`Current time for ${music.title}: ${currentAudioTime.toFixed(2)}s`);
     const audioDuration = audioRef.current.duration;
-    
+
     if (!audioDuration || audioDuration <= 0) {
       console.log(`Duration not available for ${music.title}`);
       return;
     }
 
     const newTime = Math.min(audioDuration - 0.1, currentAudioTime + 10); // Prevent seeking to exact end
-    
+
     console.log(`Skipping forward for ${music.title}: ${currentAudioTime.toFixed(2)}s → ${newTime.toFixed(2)}s (duration: ${audioDuration.toFixed(2)}s)`);
-    
+
     seekingRef.current = true;
-    
+
     try {
       audioRef.current.currentTime = newTime;
-      setCurrentTime(newTime);
-      
-      // Clear seeking flag after a short delay
+      // setCurrentTime(newTime); // REMOVE THIS LINE
       setTimeout(() => {
         seekingRef.current = false;
       }, 100);
@@ -374,7 +395,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
                 <div
                   key={i}
                   className={`w-1 bg-[#001B4B] rounded-full animate-music-bar-${i + 1}`}
-                  style={{ height: `${12 + (i % 3) * 8}px` }}
+                  style={{ height: `${12 + (i % 3) * 8}px` }} 
                 />
               ))}
             </div>
@@ -411,7 +432,6 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
         />
 
         {/* Debug Info (remove in production) */}
-       
 
         <div className="flex items-center gap-3 mt-3">
           {/* Current Time */}
