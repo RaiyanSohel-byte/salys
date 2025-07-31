@@ -218,7 +218,7 @@ const ChatHome = () => {
           className={`transition-all  duration-500 ease-in-out z-10 ${
             hasMessages
               ? "-translate-x-1/2 -translate-y-1/3 z-50 absolute bottom-5 left-1/2 transform w-full px-6"
-              : "relative bottom-60 px-6 mt-8"
+              : "relative bottom-72 px-6 mt-8"
           }  `}
         >
           <form
@@ -228,7 +228,7 @@ const ChatHome = () => {
             <div className="relative w-full">
               <Input
                 {...register("message")}
-                className={`py-8 pr-20 text-white  w-full transition-all duration-500 ${
+                className={`py-10 pr-20 text-white border-none  w-full transition-all duration-500 ${
                   hasMessages
                     ? "bg-[#444a56]  backdrop-blur-md border border-white/20"
                     : "bg-[#FFFFFF33]"
