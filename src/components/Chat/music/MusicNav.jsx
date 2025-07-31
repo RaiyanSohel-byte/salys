@@ -111,7 +111,7 @@ export const MusicNav = () => {
             onFavoritesUpdate={() => setFavoritesUpdated(prev => prev + 1)}
           />
         ))}
-      </div>
+      </div> 
 
       {filteredMusic.length === 0 && (
         <div className="text-center text-white/70 py-12">

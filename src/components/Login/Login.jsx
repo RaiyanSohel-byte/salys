@@ -232,14 +232,14 @@ const Login = () => {
                 </p>
               )}
               <div>
-                <button>
+                
                   <p
                     onClick={handleModalClick}
-                    className="text-white text-sm cursor-pointer mb-2"
+                    className="text-white text-sm cursor-pointer mb-2 text-center"
                   >
                     Forgot Password?
                   </p>
-                </button>
+                
               </div>
               <button
                 type="submit"

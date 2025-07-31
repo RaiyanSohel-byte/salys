@@ -217,7 +217,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
   };
 
   const handleProgressClick = (e) => {
-    if (!audioRef.current || !isMetadataLoaded || duration <= 0) {
+    if (!audioRef.current || duration <= 0) {
       console.log(`Progress click blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded,
@@ -252,7 +252,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   // FIXED: Skip backward function with proper state management
   const handleSkipBackward = () => {
-    if (!audioRef.current || !isMetadataLoaded) {
+    if (!audioRef.current ) {
       console.log(`Skip backward blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded
@@ -283,7 +283,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
 
   // FIXED: Skip forward function with proper state management
   const handleSkipForward = () => {
-    if (!audioRef.current || !isMetadataLoaded) {
+    if (!audioRef.current ) {
       console.log(`Skip forward blocked for ${music.title}:`, {
         hasAudio: !!audioRef.current,
         metadataLoaded: isMetadataLoaded
@@ -292,6 +292,7 @@ export const MusicCard = ({ music, onFavoritesUpdate }) => {
     }
 
     const currentAudioTime = audioRef.current.currentTime;
+    console.log(`Current time for ${music.title}: ${currentAudioTime.toFixed(2)}s`);
     const audioDuration = audioRef.current.duration;
     
     if (!audioDuration || audioDuration <= 0) {
