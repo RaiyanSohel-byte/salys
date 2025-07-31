@@ -1,4 +1,5 @@
-"use client";
+// "use client";
+import Link from 'next/link';
 import React from 'react';
 
 export default function NotFound() {
@@ -8,12 +9,12 @@ export default function NotFound() {
                 <h1 className="text-6xl sm:text-7xl font-extrabold mb-4 tracking-widest">404</h1>
                 <h2 className="text-2xl sm:text-3xl font-semibold mb-3">Page Not Found</h2>
                 <p className="mb-6 text-lg sm:text-xl text-white/90">The page you are looking for does not exist or has been moved.</p>
-                <a
+                <Link
                     href="/"
                     className="inline-block px-8 py-3 bg-white text-purple-700 rounded-lg font-bold shadow-md hover:bg-purple-700 hover:text-white transition-colors duration-200"
                 >
                     Go Home
-                </a>
+                </Link>
             </div>
         </div>
     );
