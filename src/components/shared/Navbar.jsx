@@ -1,70 +1,95 @@
-'use client'
-import Image from 'next/image'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import React from "react";
 import { RiMenu4Fill } from "react-icons/ri";
-
+import logo from "../../../public/logo.png";
 const Navbar = () => {
+  const pathName = usePathname();
 
-    const pathName = usePathname()
+  const navItems = [
+    {
+      title: "Home",
+      path: "/",
+    },
+    {
+      title: "About Us",
+      path: "/about-us",
+    },
+    {
+      title: "Types of Theraphy",
+      path: "/theraphy",
+    },
+    {
+      title: "Common Struggles",
+      path: "/commonStruggles",
+    },
+  ];
 
-    const navItems = [
-        {
-            title: 'Home',
-            path: '/'
-        },
-        {
-            title: 'About Us',
-            path: '/about-us'
-        },
-        {
-            title: 'Types of Theraphy',
-            path: '/theraphy'
-        },
-        {
-            title: 'Common Struggles',
-            path: '/commonStruggles'
-        },
-    ]
-
-    return (
-        <div >
-            <div>
-                <div className="navbar sticky top-0 z-50 bg-[#081335] shadow-md  lg:px-20 ">
-                    <div className="navbar-start ">
-                        <div className="dropdown">
-                            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden font-bold bg-transparent text-white">
-                                <RiMenu4Fill size={28} />
-                            </div>
-                            <ul
-                                tabIndex={0}
-                                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow ">
-                                {
-                                    navItems?.map((navItem) => (
-                                        <Link className=' py-2 ' href={navItem.path} key={navItem.path}>{navItem.title}</Link>
-                                    ))
-                                }
-                            </ul>
-                        </div>
-                        <Link href={'/'}><Image className='hidden lg:block' src='/logo.png' alt='website_logo' width={30} height={30}/></Link>
-                    </div>
-                    <div className="navbar-center hidden lg:flex ">
-                        <ul className="menu menu-horizontal gap-10 px-1 text-[20px] text-white">
-                            {
-                                navItems?.map((navItem) => (
-                                    <Link className={` font-semibold ${pathName === navItem.path ? "text-[#0056F6]" : ""}`} href={navItem.path} key={navItem.path}>{navItem.title}</Link>
-                                ))
-                            }
-                        </ul>
-                    </div>
-                    <div className="navbar-end">
-                        <Link href={'/chat'} className='bg-[#0056F6] text-white rounded-[38px] py-[10px] px-[20px] outline-none'>Try Free AI Therapy</Link>
-                    </div>
-                </div>
+  return (
+    <div>
+      <div>
+        <div className="navbar sticky top-0 z-50 bg-gradient-to-r from-[#1c1e2f] to-[#172a31] shadow-md  lg:px-20 ">
+          <div className="navbar-start ">
+            <div className="dropdown">
+              <div
+                tabIndex={0}
+                role="button"
+                className="btn btn-ghost lg:hidden font-bold bg-transparent text-white"
+              >
+                <RiMenu4Fill size={28} />
+              </div>
+              <ul
+                tabIndex={0}
+                className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow "
+              >
+                {navItems?.map((navItem) => (
+                  <Link
+                    className=" py-2 "
+                    href={navItem.path}
+                    key={navItem.path}
+                  >
+                    {navItem.title}
+                  </Link>
+                ))}
+              </ul>
             </div>
+            <Link href={"/"}>
+              <Image
+                className="hidden lg:block object-cover rounded-full"
+                src={logo}
+                alt="website_logo"
+                width={50}
+                height={50}
+              />
+            </Link>
+          </div>
+          <div className="navbar-center hidden lg:flex">
+            <ul className="menu menu-horizontal gap-10 px-1 text-[20px] text-white">
+              {navItems?.map((navItem) => (
+                <Link
+                  className={` font-semibold ${pathName === navItem.path ? "text-[#4FE4FE]" : ""}`}
+                  href={navItem.path}
+                  key={navItem.path}
+                >
+                  {navItem.title}
+                </Link>
+              ))}
+            </ul>
+          </div>
+          <div className="navbar-end">
+            <Link
+              href={"/chat"}
+              className="bg-[#4FE4FE] text-[#060606] rounded-[38px] py-[10px] px-[20px] outline-none"
+            >
+              Try Free AI Therapy
+            </Link>
+          </div>
         </div>
-    )
-}
+      </div>
+    </div>
+  );
+};
 
-export default Navbar
+export default Navbar;

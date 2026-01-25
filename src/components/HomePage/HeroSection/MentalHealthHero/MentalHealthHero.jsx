@@ -5,7 +5,7 @@ const MentalHealthHero = () => {
   return (
     <div className=" bg-black px-6">
       <marquee className="mt-[20px]">
-        <div className="flex gap-8 text-[#0056F6] text-xl font-bold justify-center">
+        <div className="flex gap-8 text-[#9D50FFCC] text-xl font-bold justify-center">
           <li>CHILD COUNSELLING</li>
           <li>FAMILY COUNSELLING</li>
           <li>INDIVIDUAL COUNSELLING</li>
@@ -38,7 +38,7 @@ const MentalHealthHero = () => {
           <li>COUPLE COUNSELLING</li>
         </div>
       </marquee>
-      <hr className="bg-blue-600 h-[1px] border-none mt-4" />
+      <hr className="bg-[#9D50FFCC] h-[1px] border-none mt-4" />
       <div className="flex justify-center mt-24">
         <h1 className="text-white border border-white rounded-sm w-32 text-center">
           How We Work
@@ -46,7 +46,7 @@ const MentalHealthHero = () => {
       </div>
       <h1 className="text-center text-white font-bold text-4xl mt-8">
         Nurture Your Mental{" "}
-        <span className="italic font-playfair text-[#0056F6]">Health</span> the
+        <span className="italic font-playfair text-[#9D50FF]">Health</span> the
         Holistic Way
       </h1>
       {/*Card*/}

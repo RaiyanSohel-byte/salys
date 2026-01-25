@@ -32,7 +32,7 @@ const DesktopNav = () => {
     const fetchSubscription = async () => {
       try {
         const subscriptionData = await axios.get(
-          "/api/subscriptions/user-subscriptions/"
+          "/api/subscriptions/user-subscriptions/",
         );
         setSubscription(subscriptionData.data);
       } catch (error) {
@@ -57,7 +57,7 @@ const DesktopNav = () => {
   }, [isCollapsed]);
 
   const user = JSON.parse(localStorage.getItem("user") || "{}");
-console.log(subscription, "subscription in desktop nav");
+  console.log(subscription, "subscription in desktop nav");
 
   return (
     <div>
@@ -70,7 +70,7 @@ console.log(subscription, "subscription in desktop nav");
         }}
       >
         <div className="px-4 py-4">
-          {!isCollapsed ? (
+          {!isCollapsed ?
             <div className=" flex justify-between items-center">
               <h1 className="text-xl font-lemon">Emothrive Therapy</h1>
               <button
@@ -80,21 +80,15 @@ console.log(subscription, "subscription in desktop nav");
                 <IoIosArrowForward className="duration-300 group-hover:rotate-180" />
               </button>
             </div>
-          ) : (
-            <div className="flex justify-center">
+          : <div className="flex justify-center">
               <button
                 onClick={toggleNav}
                 className="w-10 h-10 flex items-center justify-center rounded-md text-xl bg-white text-[#0056F6] transition-colors font-bold"
               >
-                <Image
-                  src="/logo.png"
-                  alt="Logo"
-                  width={40}
-                  height={40}
-                />
+                <Image src="/logo.png" alt="Logo" width={40} height={40} />
               </button>
             </div>
-          )}
+          }
         </div>
         {/* Navigation Content */}
         <div className={`${isCollapsed ? "px-2" : "px-5"} py-2`}>
@@ -126,9 +120,9 @@ console.log(subscription, "subscription in desktop nav");
               className={`flex items-center ${
                 isCollapsed ? "justify-center" : "gap-3"
               } hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/chat/mood_tracker"
-                  ? "bg-white text-[#0056F6]"
-                  : ""
+                pathname === "/chat/mood_tracker" ?
+                  "bg-white text-[#0056F6]"
+                : ""
               }`}
             >
               <BiTargetLock size={24} className="w-6 flex-shrink-0" />
@@ -145,9 +139,9 @@ console.log(subscription, "subscription in desktop nav");
               <ReminderIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/chat/reminder"
-                    ? "fill-[#0056F6]"
-                    : "fill-white group-hover:fill-[#0056F6]"
+                  pathname === "/chat/reminder" ? "fill-[#0056F6]" : (
+                    "fill-white group-hover:fill-[#0056F6]"
+                  )
                 }`}
               />
               {!isCollapsed && <h1>Reminders</h1>}
@@ -163,9 +157,9 @@ console.log(subscription, "subscription in desktop nav");
               <TaskIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/chat/task"
-                    ? "fill-[#0056F6]"
-                    : "fill-white group-hover:fill-[#0056F6]"
+                  pathname === "/chat/task" ? "fill-[#0056F6]" : (
+                    "fill-white group-hover:fill-[#0056F6]"
+                  )
                 }`}
               />
               {!isCollapsed && <h1>Task</h1>}
@@ -207,7 +201,7 @@ console.log(subscription, "subscription in desktop nav");
         </div>
 
         <div>
-          {subscription&&subscription[0]?.status=="active" ? (
+          {subscription && subscription[0]?.status == "active" ?
             <div
               className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer ${
                 !isCollapsed ? "pt-1" : " hidden"
@@ -217,13 +211,13 @@ console.log(subscription, "subscription in desktop nav");
               <div>
                 <h1 className=" font-semibold text-[16px]">
                   {user.name || "Unknown User"}
-                  <p className=" font-normal text-sm">{subscription[0]?.plan_name} plan</p>
+                  <p className=" font-normal text-sm">
+                    {subscription[0]?.plan_name} plan
+                  </p>
                 </h1>
-
               </div>
             </div>
-          ) : (
-            <div
+          : <div
               onClick={() => {
                 // First set the flag in localStorage
                 localStorage.setItem("scrollToPricing", "true");
@@ -241,7 +235,7 @@ console.log(subscription, "subscription in desktop nav");
                 <p className=" font-normal text-sm">More advanced feature</p>
               </div>
             </div>
-          )}
+          }
         </div>
       </div>
     </div>
