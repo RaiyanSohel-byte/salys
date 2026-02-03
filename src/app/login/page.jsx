@@ -1,5 +1,5 @@
-import Login from '@/components/Login/Login'
-import React from 'react'
+import Login from "@/components/Login/Login";
+import React from "react";
 
 export const metadata = {
   title: "Login",
@@ -12,18 +12,16 @@ export const metadata = {
     "account login",
     "wellness dashboard",
     "secure login",
-    "emotional support tools"
+    "emotional support tools",
   ],
-
 };
-
 
 const page = () => {
   return (
-    <div>
-        <Login/>
+    <div className="h-screen">
+      <Login />
     </div>
-  )
-}
+  );
+};
 
-export default page
+export default page;

@@ -57,7 +57,7 @@ const Signup = () => {
 
     if (passwordValue.length < 8) {
       errors.push(
-        "This password is too short. It must contain at least 8 characters."
+        "This password is too short. It must contain at least 8 characters.",
       );
     }
 
@@ -204,11 +204,9 @@ const Signup = () => {
                   onClick={togglePasswordVisibility}
                   className="mx-2.5 focus:outline-none"
                 >
-                  {showPassword ? (
+                  {showPassword ?
                     <IoMdEyeOff size={24} className="text-gray-500" />
-                  ) : (
-                    <IoEye size={24} className="text-gray-500" />
-                  )}
+                  : <IoEye size={24} className="text-gray-500" />}
                 </button>
               </div>
               {errors.password && (
@@ -242,11 +240,9 @@ const Signup = () => {
                   onClick={togglePasswordVisibility}
                   className="mx-2.5 focus:outline-none"
                 >
-                  {showPassword ? (
+                  {showPassword ?
                     <IoMdEyeOff size={24} className="text-gray-500" />
-                  ) : (
-                    <IoEye size={24} className="text-gray-500" />
-                  )}
+                  : <IoEye size={24} className="text-gray-500" />}
                 </button>
               </div>
               {errors.confirmPassword && (
@@ -259,24 +255,32 @@ const Signup = () => {
                 type="submit"
                 disabled={loading}
                 className={`${
-                  loading
-                    ? "bg-gray-500 cursor-not-allowed"
-                    : "bg-[#0056F6] cursor-pointer hover:bg-[#0046d6]"
+                  loading ?
+                    "bg-gray-500 cursor-not-allowed"
+                  : "bg-[#0056F6] cursor-pointer hover:bg-[#0046d6]"
                 } rounded-lg w-full text-white py-3.5 mb-2 transition-colors`}
               >
                 {loading ? "Creating Account..." : "Sign up"}
               </button>
 
-              <div className="flex items-center gap-3 justify-center"><p className=" text-white font-normal">Already have an account?<Link href={'/login'} className=" text-blue-600 font-bold"> Sign In</Link></p></div>
-            
+              <div className="flex items-center gap-3 justify-center">
+                <p className=" text-white font-normal">
+                  Already have an account?
+                  <Link href={"/login"} className=" text-blue-600 font-bold">
+                    {" "}
+                    Sign In
+                  </Link>
+                </p>
+              </div>
+
               <h3 className="text-center mb-5 text-[#EEEEEE]">
                 or continue with
               </h3>
             </form>
             {/* Use this for frontend authentication */}
-              {/* <GoogleSign /> */}
+            <GoogleSign />
             {/* Use this for backend authentication */}
-              <GoogleBtnBackend/>
+            {/* <GoogleBtnBackend/> */}
           </div>
         </div>
       </div>

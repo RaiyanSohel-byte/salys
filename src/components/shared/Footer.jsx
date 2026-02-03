@@ -110,7 +110,7 @@ const Footer = () => {
       </div>
       <hr className="text-white mt-5" />
       <h1 className="text-center text-white mt-6">
-        © 2025 <span className="text-[#9D50FF]">Mental.</span> All Rights
+        © 2025 <span className="text-[#9D50FF]">STELYS</span> All Rights
         Reserved.
       </h1>
       <h1 className="text-center text-white mt-2">

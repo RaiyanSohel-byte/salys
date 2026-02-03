@@ -182,7 +182,7 @@ const Ratting = () => {
       </h1>
       <div className="mt-16">
         <div className="mt-[60px] lg:flex lg:gap-6 justify-center">
-          <div className="lg:w-[424px] text-black h-[267px] py-11 px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300 mb-2">
+          <div className="lg:w-[424px] text-black h-[300px] py-11 px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300 mb-2">
             <Image
               src="/project-image/ratting1.png"
               alt="profile"
@@ -204,7 +204,7 @@ const Ratting = () => {
               nights.
             </p>
           </div>
-          <div className="lg:w-[424px] h-[267px] text-black py-11 px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300 mb-2">
+          <div className="lg:w-[424px] h-[300px] text-black py-11 px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300 mb-2">
             <Image
               src="/project-image/ratting2.png"
               alt="profile"
@@ -226,7 +226,7 @@ const Ratting = () => {
               felt life-saving
             </p>
           </div>
-          <div className="lg:w-[424px] h-[267px] py-11 text-black px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300">
+          <div className="lg:w-[424px] h-[300px] py-11 text-black px-6 border-1 border-[#76A6FF] rounded-xl text-center bg-[#76A6FF] transition duration-300">
             <Image
               src="/project-image/ratting3.png"
               alt="profile"

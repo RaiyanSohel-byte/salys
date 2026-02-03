@@ -12,24 +12,21 @@ const Header = () => {
           </button>
         </div>
         <p className="mt-[40px] text-3xl lg:text-[60px] text-center font-bold">
-          AI-Powered{" "}
+          Accessible AI, <br />
           <span className="italic font-playfair text-[#4FE4FE]">
-            Mental Health
+            Inspired by ChatGPT
           </span>
-          <br />
-          Support Anytime, Anywhere.
         </p>
         <p className=" mt-9 lg:mt-[30px] text-center text-[#D0E0FF] text-2xl px-2 lg:px-0 ">
-          Experience personalized, text-based therapy sessions guided by <br />{" "}
-          advanced AI designed to support your mental health journey through
-          real <br /> conversations.
+          Designed for people with disabilities, chronic illness, and <br />{" "}
+          anyone who needs a calmer AI experience.
         </p>
         <div className="flex justify-center">
           <Link
             href={"/chat"}
             className="bg-[#4FE4FE] text-black font-medium rounded-[38px] py-[10px] px-[20px] outline-none lg:mt-4 mt-14 mb-14 hover:bg-sky-500"
           >
-            Try Free AI Therapy
+            Try STELYS Chat
           </Link>
         </div>
         <div className="flex justify-center px-4 lg:mt-0">

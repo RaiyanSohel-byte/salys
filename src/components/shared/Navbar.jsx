@@ -17,14 +17,6 @@ const Navbar = () => {
       title: "About Us",
       path: "/about-us",
     },
-    {
-      title: "Types of Theraphy",
-      path: "/theraphy",
-    },
-    {
-      title: "Common Struggles",
-      path: "/commonStruggles",
-    },
   ];
 
   return (
@@ -81,9 +73,9 @@ const Navbar = () => {
           <div className="navbar-end">
             <Link
               href={"/chat"}
-              className="bg-[#4FE4FE] text-[#060606] rounded-[38px] py-[10px] px-[20px] outline-none"
+              className="bg-[#4FE4FE] text-[#060606] font-semibold rounded-[38px] py-[10px] px-[20px] outline-none"
             >
-              Try Free AI Therapy
+              Try STELYS Chat
             </Link>
           </div>
         </div>
