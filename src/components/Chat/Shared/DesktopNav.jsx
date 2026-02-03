@@ -32,7 +32,7 @@ const DesktopNav = () => {
     const fetchSubscription = async () => {
       try {
         const subscriptionData = await axios.get(
-          "/api/subscriptions/user-subscriptions/",
+          "/subscriptions/user-subscriptions/",
         );
         setSubscription(subscriptionData.data);
       } catch (error) {
