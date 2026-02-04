@@ -1,12 +1,12 @@
-import Theraphy from '@/components/Theraphy/Theraphy'
-import React from 'react'
+import Theraphy from "@/components/Theraphy/Theraphy";
+import React from "react";
 
 export const metadata = {
   title: "Types of Therapy",
   description:
-    "Explore various types of therapy available on Emothrive, including cognitive behavioral therapy, mindfulness-based approaches, and more to support your mental well-being.",
+    "Explore various types of therapy available on Stelys, including cognitive behavioral therapy, mindfulness-based approaches, and more to support your mental well-being.",
   keywords: [
-    "Emothrive",
+    "Stelys",
     "types of therapy",
     "mental health therapies",
     "CBT",
@@ -14,18 +14,16 @@ export const metadata = {
     "emotional support",
     "psychotherapy",
     "wellness techniques",
-    "healing methods"
+    "healing methods",
   ],
- 
 };
-
 
 const Page = () => {
   return (
     <div>
-        <Theraphy/>
+      <Theraphy />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

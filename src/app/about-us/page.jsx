@@ -1,13 +1,13 @@
-import About_Us from '@/components/AboutUs/About_Us'
-import React from 'react'
+import About_Us from "@/components/AboutUs/About_Us";
+import React from "react";
 
 export const metadata = {
   title: "About Us",
   description:
-    "Learn about Emothrive's mission to support emotional well-being through personalized tools, expert resources, and a compassionate community.",
+    "Learn about Stelys's mission to support emotional well-being through personalized tools, expert resources, and a compassionate community.",
   keywords: [
-    "Emothrive",
-    "About Emothrive",
+    "Stelys",
+    "About Stelys",
     "mental health",
     "emotional well-being",
     "self-care platform",
@@ -19,13 +19,12 @@ export const metadata = {
   },
 };
 
-
 const Page = () => {
   return (
     <div>
-        <About_Us/>
+      <About_Us />
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

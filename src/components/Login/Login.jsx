@@ -259,9 +259,9 @@ const Login = () => {
               </h3>
             </form>
             {/* use this for front end authentication */}
-            <GoogleSign />
+            {/* <GoogleSign /> */}
             {/* use this for back end authentication */}
-            {/* <GoogleBtnBackend /> */}
+            <GoogleBtnBackend />
           </div>
         </div>
       </div>

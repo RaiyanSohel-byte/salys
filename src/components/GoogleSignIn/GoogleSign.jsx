@@ -1,44 +1,43 @@
 "use client";
-import React, { useEffect } from 'react';
-import { signIn, signOut, useSession } from 'next-auth/react';
+import React, { useEffect } from "react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { AiFillGoogleCircle } from "react-icons/ai";
-import { removeTokens } from '@/lib/auth';
+import { removeTokens } from "@/lib/auth";
 
 export const GoogleSign = () => {
   const { data: session, status } = useSession();
 
   useEffect(() => {
-    
     if (session?.backendTokens) {
       try {
         // Store backend tokens
         if (session.backendTokens.access) {
-          localStorage.setItem('access', session.backendTokens.access);
+          localStorage.setItem("access", session.backendTokens.access);
         }
         if (session.backendTokens.refresh) {
-          localStorage.setItem('refresh', session.backendTokens.refresh);
+          localStorage.setItem("refresh", session.backendTokens.refresh);
         }
-        
+
         // Store user data
         if (session.backendTokens.user) {
-          localStorage.setItem('user', JSON.stringify(session.backendTokens.user));
+          localStorage.setItem(
+            "user",
+            JSON.stringify(session.backendTokens.user),
+          );
         }
-        
       } catch (error) {
-        console.error('Error storing tokens to localStorage:', error);
+        console.error("Error storing tokens to localStorage:", error);
       }
     }
   }, [session]);
 
   const handleGoogleSignIn = async () => {
     try {
-      const result = await signIn('google', {
-        callbackUrl: '/chat', 
-        redirect: false, 
+      const result = await signIn("google", {
+        callbackUrl: "/chat",
       });
-      
     } catch (error) {
-      console.error('Google Sign-In error:', error);
+      console.error("Google Sign-In error:", error);
     }
   };
 
@@ -46,11 +45,11 @@ export const GoogleSign = () => {
     try {
       // Clear tokens using utility function
       removeTokens();
-      localStorage.removeItem('user');
-      
-      await signOut({ callbackUrl: '/login' });
+      localStorage.removeItem("user");
+
+      await signOut({ callbackUrl: "/login" });
     } catch (error) {
-      console.error('Sign-out error:', error);
+      console.error("Sign-out error:", error);
     }
   };
 
@@ -64,14 +63,13 @@ export const GoogleSign = () => {
   }
 
   if (session) {
-
     return (
       <div className="text-center">
         <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
           <p>Signed in as {session.user?.email}</p>
           <p className="text-sm">Welcome, {session.user?.name}!</p>
         </div>
-        <button 
+        <button
           onClick={handleSignOut}
           className="bg-red-500 hover:bg-red-600 text-white rounded-lg w-full py-3.5 transition-colors"
         >
@@ -82,7 +80,7 @@ export const GoogleSign = () => {
   }
 
   return (
-    <button 
+    <button
       onClick={handleGoogleSignIn}
       className="bg-white hover:bg-gray-50 rounded-lg w-full flex justify-center items-center py-3.5 cursor-pointer mb-4 border border-gray-200 transition-colors"
     >

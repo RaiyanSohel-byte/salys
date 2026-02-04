@@ -24,7 +24,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
 
   const { subscription, setSubscription } = useSubscription();
   const user = JSON.parse(localStorage.getItem("user") || "{}");
- 
+
   const onSearchSubmit = (e) => {
     e.preventDefault();
     const value = e.target.search.value;
@@ -35,54 +35,52 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
 
   const handleModalClick = (event, modalId) => {
     const rect = event.currentTarget.getBoundingClientRect();
-    const navRect = document.querySelector('.nav-container').getBoundingClientRect();
-    
+    const navRect = document
+      .querySelector(".nav-container")
+      .getBoundingClientRect();
+
     // Calculate position relative to the nav container
     let x = rect.right - navRect.left + 10; // 10px gap from the button
     let y = rect.top - navRect.top;
-    
+
     // Check if modal would go off-screen horizontally
     const modalWidth = 208; // 52 * 4 = 208px (w-52)
     const screenWidth = window.innerWidth;
-    
+
     if (x + modalWidth > screenWidth) {
       x = rect.left - navRect.left - modalWidth - 10; // Position to the left of the button
     }
-    
+
     // Check if modal would go off-screen vertically
     const modalHeight = 100; // Approximate height
     const screenHeight = window.innerHeight;
-    
+
     if (y + modalHeight > screenHeight) {
       y = screenHeight - modalHeight - 20; // Position near bottom with some padding
     }
-    
+
     setModalPosition({ x, y });
     document.getElementById(modalId).showModal();
   };
 
-
-
-  return (  
+  return (
     <div className="">
       <div
-        className={`w-[250px] fixed left-0 top-0 h-full text-white transition-all duration-300 z-50 nav-container font-nunito transform ${!isOpened ? '-translate-x-96' : 'translate-x-0'}`}
+        className={`w-[250px] fixed left-0 top-0 h-full text-white transition-all duration-300 z-50 nav-container font-nunito transform ${!isOpened ? "-translate-x-96" : "translate-x-0"}`}
         style={{
           background: "linear-gradient(to bottom, #091d81, #000627)",
         }}
       >
         <div className="px-4 py-4">
           <div className=" flex justify-between items-center">
-              <h1 className="text-xl font-lemon" >
-                Emothrive Therapy
-              </h1>
-              <button
-                onClick={toggleOpen}
-                className={`p-2 rounded-md group hover:bg-white hover:text-[#0056F6] transition-all`}
-              >
-                <RxCross2 className="duration-300 group-hover:rotate-180" />
-              </button>
-            </div>
+            <h1 className="text-xl font-lemon">Stelys Therapy</h1>
+            <button
+              onClick={toggleOpen}
+              className={`p-2 rounded-md group hover:bg-white hover:text-[#0056F6] transition-all`}
+            >
+              <RxCross2 className="duration-300 group-hover:rotate-180" />
+            </button>
+          </div>
         </div>
         {/* Navigation Content */}
         <div className={`px-5 py-2`}>
@@ -94,7 +92,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               }`}
             >
               <LuMessageCircleMore size={24} className="w-6 flex-shrink-0" />
-              { <h1>Start New Session</h1>}
+              {<h1>Start New Session</h1>}
             </Link>
             <Link
               href={"/chat/history"}
@@ -103,16 +101,18 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               }`}
             >
               <LuHistory size={24} className="w-6 flex-shrink-0" />
-              { <h1>Search History</h1>}
+              {<h1>Search History</h1>}
             </Link>
             <Link
               href={"/chat/mood_tracker"}
               className={`flex items-center gap-3 hover:bg-white hover:text-[#0056F6] px-2.5 py-3 rounded-sm font-semibold ${
-                pathname === "/chat/mood_tracker" ? "bg-white text-[#0056F6]" : ""
+                pathname === "/chat/mood_tracker" ?
+                  "bg-white text-[#0056F6]"
+                : ""
               }`}
             >
               <BiTargetLock size={24} className="w-6 flex-shrink-0" />
-              { <h1>Mood Tracker</h1>}
+              {<h1>Mood Tracker</h1>}
             </Link>
             <Link
               href={"/chat/reminder"}
@@ -123,12 +123,12 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               <ReminderIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/chat/reminder"
-                    ? "fill-[#0056F6]"
-                    : "fill-white group-hover:fill-[#0056F6]"
+                  pathname === "/chat/reminder" ? "fill-[#0056F6]" : (
+                    "fill-white group-hover:fill-[#0056F6]"
+                  )
                 }`}
               />
-              { <h1>Reminders</h1>}
+              {<h1>Reminders</h1>}
             </Link>
             <Link
               href={"/chat/task"}
@@ -139,12 +139,12 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               <TaskIcon
                 size={24}
                 className={`w-6 flex-shrink-0 ${
-                  pathname === "/chat/task"
-                    ? "fill-[#0056F6]"
-                    : "fill-white group-hover:fill-[#0056F6]"
+                  pathname === "/chat/task" ? "fill-[#0056F6]" : (
+                    "fill-white group-hover:fill-[#0056F6]"
+                  )
                 }`}
               />
-              { <h1>Task</h1>}
+              {<h1>Task</h1>}
             </Link>
             <Link
               href={"/chat/music"}
@@ -153,7 +153,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               }`}
             >
               <FaHeadphones size={24} className="w-6 flex-shrink-0" />
-              { <h1>Music</h1>}
+              {<h1>Music</h1>}
             </Link>
             <Link
               href={"/chat/resources"}
@@ -162,7 +162,7 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               }`}
             >
               <IoBookOutline size={24} className="w-6 flex-shrink-0" />
-              { <h1>Resources</h1>}
+              {<h1>Resources</h1>}
             </Link>
             <Link
               href={"/"}
@@ -171,46 +171,44 @@ const MobileNav = ({ isOpened, toggleOpen }) => {
               }`}
             >
               <FaHome size={24} className="w-6 flex-shrink-0" />
-              { <h1 className=" px-3"> Return to Home</h1>}
+              {<h1 className=" px-3"> Return to Home</h1>}
             </Link>
           </nav>
-          
         </div>
 
+        <div>
+          {subscription && subscription[0]?.status == "active" ?
+            <div
+              className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer  w-full px-5 py-2 gap-3 absolute bottom-0 `}
+            >
+              <MdHealthAndSafety className=" text-green-400" size={24} />
+              <div>
+                <h1 className=" font-semibold text-[16px]">
+                  {user.name || "Unknown User"}
+                  <p className=" font-normal text-sm">
+                    {subscription[0]?.plan_name} plan
+                  </p>
+                </h1>
+              </div>
+            </div>
+          : <div
+              onClick={() => {
+                // First set the flag in localStorage
+                localStorage.setItem("scrollToPricing", "true");
 
-         <div>
-                  {subscription&&subscription[0]?.status=="active" ? (
-                    <div
-                      className={`flex items-center rounded-t-xl bg-[#001BA7] cursor-pointer  w-full px-5 py-2 gap-3 absolute bottom-0 `}
-                    >
-                      <MdHealthAndSafety className=" text-green-400" size={24} />
-                      <div>
-                        <h1 className=" font-semibold text-[16px]">
-                          {user.name || "Unknown User"}
-                          <p className=" font-normal text-sm">{subscription[0]?.plan_name} plan</p>
-                        </h1>
-        
-                      </div>
-                    </div>
-                  ) : (
-                    <div
-                      onClick={() => {
-                        // First set the flag in localStorage
-                        localStorage.setItem("scrollToPricing", "true");
-        
-                        // Navigate to the home page with a hash fragment
-                        window.location.href = "/";
-                      }}
-                      className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer w-full px-5 py-2 gap-3 absolute bottom-0 `}
-                    >
-                      <TbArrowBigUpLine size={24} />
-                      <div>
-                        <h1 className=" font-semibold text-[16px]">Subscription</h1>
-                        <p className=" font-normal text-sm">More advanced feature</p>
-                      </div>
-                    </div>
-                  )}
-                </div>
+                // Navigate to the home page with a hash fragment
+                window.location.href = "/";
+              }}
+              className={`flex items-center rounded-t-xl bg-[#0056F6] cursor-pointer w-full px-5 py-2 gap-3 absolute bottom-0 `}
+            >
+              <TbArrowBigUpLine size={24} />
+              <div>
+                <h1 className=" font-semibold text-[16px]">Subscription</h1>
+                <p className=" font-normal text-sm">More advanced feature</p>
+              </div>
+            </div>
+          }
+        </div>
       </div>
     </div>
   );

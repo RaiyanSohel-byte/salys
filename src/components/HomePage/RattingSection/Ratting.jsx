@@ -154,7 +154,7 @@ const Ratting = () => {
 
                     <button
                       onClick={() => handlePlanClick(plan.id)}
-                      className="w-full bg-[#9D50FF] py-2 rounded text-white hover:opacity-90"
+                      className="w-full bg-[#9D50FF] py-2 rounded text-white hover:opacity-90 cursor-pointer"
                     >
                       Choose this plan
                     </button>

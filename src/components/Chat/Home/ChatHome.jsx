@@ -158,10 +158,10 @@ const ChatHome = () => {
           <div className="text-center text-white">
             <div id="welcome-message">
               <h1 className="text-3xl font-bold text-[#0059FF]">
-                Emothrive Your AI Therapist
+                Stelys Your AI Therapist
               </h1>
               <p className="mt-4 text-[#F9F9F9] mb-6 text-2xl">
-                I'm Emothrive, your AI Guide to Better Mental Health.
+                I'm Stelys, your AI Guide to Better Mental Health.
                 <br />
                 <span className="text-[#C5C5C5] text-xl">
                   What do you want to talk about?

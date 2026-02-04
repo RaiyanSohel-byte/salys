@@ -72,7 +72,7 @@ const DesktopNav = () => {
         <div className="px-4 py-4">
           {!isCollapsed ?
             <div className=" flex justify-between items-center">
-              <h1 className="text-xl font-lemon">Emothrive Therapy</h1>
+              <h1 className="text-xl font-lemon">Stelys Therapy</h1>
               <button
                 onClick={toggleNav}
                 className={`p-2 rounded-md group hover:bg-white hover:text-[#0056F6] transition-all`}

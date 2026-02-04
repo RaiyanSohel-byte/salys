@@ -1,12 +1,12 @@
-import CommonStruggles from '@/components/CommonStruggles/CommonStruggles'
-import React from 'react'
+import CommonStruggles from "@/components/CommonStruggles/CommonStruggles";
+import React from "react";
 
 export const metadata = {
   title: "Common Struggles",
   description:
     "Discover insights into common emotional and mental health struggles such as anxiety, depression, stress, and loneliness, with resources to help you cope and heal.",
   keywords: [
-    "Emothrive",
+    "Stelys",
     "common struggles",
     "mental health challenges",
     "emotional struggles",
@@ -15,20 +15,16 @@ export const metadata = {
     "stress management",
     "loneliness",
     "coping strategies",
-    "mental wellness support"
+    "mental wellness support",
   ],
- 
 };
-
 
 const Page = () => {
   return (
     <div>
-      <CommonStruggles/>
+      <CommonStruggles />
     </div>
-  )
-}
+  );
+};
 
-export default Page
-
-
+export default Page;

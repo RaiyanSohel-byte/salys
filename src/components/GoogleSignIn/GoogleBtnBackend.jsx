@@ -7,23 +7,18 @@ export const GoogleBtnBackend = () => {
   const login = useGoogleLogin({
     // 2. This onSuccess callback receives the access_token
     onSuccess: async (tokenResponse) => {
-      console.log("Received Google access token:", tokenResponse.access_token);
-
       // 3. We send the access_token to our backend
       try {
-        const res = await fetch(
-          "http://localhost:8000/users/auth/google/",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-            body: JSON.stringify({
-              access_token: tokenResponse.access_token,
-            }),
-          }
-        );
+        const res = await fetch("http://72.61.65.37/api/users/auth/google/", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            access_token: tokenResponse.access_token,
+          }),
+        });
 
         const data = await res.json();
         console.log("Backend response:", data);
@@ -31,7 +26,7 @@ export const GoogleBtnBackend = () => {
         if (res.ok) {
           // Set tokens in both localStorage and cookies
           setTokens(data.access, data.refresh);
-          
+
           window.location.href = "/chat";
         } else {
           console.error("Backend error:", data);
@@ -50,23 +45,23 @@ export const GoogleBtnBackend = () => {
     <button
       onClick={() => login()}
       style={{
-        padding: '10px 20px',
-        fontSize: '16px',
-        cursor: 'pointer',
-        border: '1px solid #ccc',
-        borderRadius: '4px',
-        backgroundColor: '#fff',
-        display: 'flex',
-        alignItems: 'center',
-        gap: '10px',
-        width: '386px',
-        justifyContent: 'center'
+        padding: "10px 20px",
+        fontSize: "16px",
+        cursor: "pointer",
+        border: "1px solid #ccc",
+        borderRadius: "4px",
+        backgroundColor: "#fff",
+        display: "flex",
+        alignItems: "center",
+        gap: "10px",
+        width: "386px",
+        justifyContent: "center",
       }}
     >
       <img
         src="https://www.google.com/favicon.ico"
         alt="Google icon"
-        style={{ width: '20px', height: '20px' }}
+        style={{ width: "20px", height: "20px" }}
       />
       Sign in with Google
     </button>

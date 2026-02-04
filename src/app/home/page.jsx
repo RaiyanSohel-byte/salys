@@ -1,13 +1,13 @@
-import Header from '@/components/HomePage/HeroSection/Header'
-import MentalHealthHero from '@/components/HomePage/HeroSection/MentalHealthHero/MentalHealthHero'
-import React from 'react'
+import Header from "@/components/HomePage/HeroSection/Header";
+import MentalHealthHero from "@/components/HomePage/HeroSection/MentalHealthHero/MentalHealthHero";
+import React from "react";
 
 export const metadata = {
   title: "Home",
   description:
-    "Emothrive is your trusted platform for enhancing emotional well-being through expert-curated tools, personalized support, and a nurturing digital space.",
+    "Stelys is your trusted platform for enhancing emotional well-being through expert-curated tools, personalized support, and a nurturing digital space.",
   keywords: [
-    "Emothrive",
+    "Stelys",
     "mental health platform",
     "emotional support",
     "wellness tools",
@@ -17,18 +17,15 @@ export const metadata = {
     "mindfulness",
     "personal development",
   ],
-
 };
-
 
 const HomePage = () => {
   return (
     <div>
-      
-        <Header/>
-        <MentalHealthHero/>
+      <Header />
+      <MentalHealthHero />
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;
