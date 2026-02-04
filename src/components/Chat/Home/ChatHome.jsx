@@ -1,8 +1,8 @@
 "use client";
-import { Button } from '@/components/ui/button'
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useAxios } from "@/providers/AxiosProvider";
-import Image from 'next/image'
+import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -30,7 +30,7 @@ const ChatHome = () => {
 
     setHasMessages(true);
     setIsCreatingSession(true);
-    
+
     // Add user message instantly
     const userMessageId = Date.now();
     setMessageData((prev) => [
@@ -67,24 +67,26 @@ const ChatHome = () => {
       // Check if session was created successfully
       if (response.status === 200 || response.status === 201) {
         const sessionId = response.data.session_id || response.data.sessionId;
-        
+
         if (sessionId) {
           // Navigate to the new session page with a small delay to show the response
           setTimeout(() => {
             router.push(`/chat/${sessionId}`);
           }, 500);
-          
+
           // Update bot message with response before navigation
           setMessageData((prev) =>
             prev.map((msg) =>
-              msg.id === botMessageId
-                ? {
-                    ...msg,
-                    message: response.data.response?.text || "Session created! Redirecting...",
-                    status: "success",
-                  }
-                : msg
-            )
+              msg.id === botMessageId ?
+                {
+                  ...msg,
+                  message:
+                    response.data.response?.text ||
+                    "Session created! Redirecting...",
+                  status: "success",
+                }
+              : msg,
+            ),
           );
         } else {
           throw new Error("Session ID not received");
@@ -92,27 +94,27 @@ const ChatHome = () => {
       } else {
         setMessageData((prev) =>
           prev.map((msg) =>
-            msg.id === botMessageId
-              ? {
-                  ...msg,
-                  message: "Error creating chat session",
-                  status: "error",
-                }
-              : msg
-          )
+            msg.id === botMessageId ?
+              {
+                ...msg,
+                message: "Error creating chat session",
+                status: "error",
+              }
+            : msg,
+          ),
         );
       }
     } catch (error) {
       setMessageData((prev) =>
         prev.map((msg) =>
-          msg.id === botMessageId
-            ? {
-                ...msg,
-                message: "Failed to create chat session. Please try again.",
-                status: "error",
-              }
-            : msg
-        )
+          msg.id === botMessageId ?
+            {
+              ...msg,
+              message: "Failed to create chat session. Please try again.",
+              status: "error",
+            }
+          : msg,
+        ),
       );
       console.error("Error creating chat session:", error);
     } finally {
@@ -148,9 +150,9 @@ const ChatHome = () => {
       <main className="h-screen w-full flex flex-col relative overflow-hidden">
         <div
           className={`absolute inset-0 flex items-center justify-center transition-all duration-1000 ease-in-out z-10 ${
-            hasMessages
-              ? "opacity-0 pointer-events-none transform translate-y-[-20px]"
-              : "opacity-100 pointer-events-auto transform translate-y-0"
+            hasMessages ?
+              "opacity-0 pointer-events-none transform translate-y-[-20px]"
+            : "opacity-100 pointer-events-auto transform translate-y-0"
           }`}
         >
           <div className="text-center text-white">
@@ -171,9 +173,9 @@ const ChatHome = () => {
 
         <div
           className={`flex-1 transition-all pb-60 duration-1000 ease-in-out overflow-y-auto px-6 pt-6 ${
-            hasMessages && MessageData.length > 0
-              ? "opacity-100 transform translate-y-5"
-              : "opacity-0 transform translate-y-10 pointer-events-none"
+            hasMessages && MessageData.length > 0 ?
+              "opacity-100 transform translate-y-5"
+            : "opacity-0 transform translate-y-10 pointer-events-none"
           }`}
         >
           <div className="max-w-4xl mx-auto">
@@ -188,25 +190,31 @@ const ChatHome = () => {
                   >
                     <div
                       className={`max-w-xs text-start lg:max-w-md px-4 py-2 rounded-lg ${
-                        item.sender === "user"
-                          ? "bg-[#0059FF] text-white ml-auto"
-                          : "bg-[#FFFFFF1A] text-white mr-auto"
+                        item.sender === "user" ?
+                          "bg-[#0059FF] text-white ml-auto"
+                        : "bg-[#FFFFFF1A] text-white mr-auto"
                       }`}
                     >
-                      {item.status === "loading" ? (
+                      {item.status === "loading" ?
                         <div className="flex items-center gap-2">
                           <div className="flex space-x-1">
                             <div className="w-2 h-2 bg-white rounded-full animate-bounce"></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
-                            <div className="w-2 h-2 bg-white rounded-full animate-bounce" style={{animationDelay: '0.2s'}}></div>
+                            <div
+                              className="w-2 h-2 bg-white rounded-full animate-bounce"
+                              style={{ animationDelay: "0.1s" }}
+                            ></div>
+                            <div
+                              className="w-2 h-2 bg-white rounded-full animate-bounce"
+                              style={{ animationDelay: "0.2s" }}
+                            ></div>
                           </div>
                           <span className="text-sm text-gray-300">
-                            {isCreatingSession ? "Creating session..." : "Thinking..."}
+                            {isCreatingSession ?
+                              "Creating session..."
+                            : "Thinking..."}
                           </span>
                         </div>
-                      ) : (
-                        <p className="text-lg">{item.message}</p>
-                      )}
+                      : <p className="text-lg">{item.message}</p>}
                     </div>
                   </div>
                 ))}
@@ -216,9 +224,9 @@ const ChatHome = () => {
 
         <div
           className={`transition-all  duration-500 ease-in-out z-10 ${
-            hasMessages
-              ? "-translate-x-1/2 -translate-y-1/3 z-50 absolute bottom-5 left-1/2 transform w-full px-6"
-              : "relative bottom-72 px-6 mt-8"
+            hasMessages ?
+              "-translate-x-1/2 -translate-y-1/3 z-50 absolute bottom-5 left-1/2 transform w-full px-6"
+            : "relative bottom-72 px-6 mt-8"
           }  `}
         >
           <form
@@ -229,9 +237,9 @@ const ChatHome = () => {
               <Input
                 {...register("message")}
                 className={`py-10 pr-20 text-white border-none  w-full transition-all duration-500 ${
-                  hasMessages
-                    ? "bg-[#444a56]  backdrop-blur-md border border-white/20"
-                    : "bg-[#FFFFFF33]"
+                  hasMessages ?
+                    "bg-[#444a56]  backdrop-blur-md border border-white/20"
+                  : "bg-[#FFFFFF33]"
                 }`}
                 type="text"
                 placeholder="Start typing here..."
